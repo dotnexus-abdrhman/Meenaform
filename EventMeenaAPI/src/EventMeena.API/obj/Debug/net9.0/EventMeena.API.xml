@@ -1,0 +1,612 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EventMeena.API</name>
+    </assembly>
+    <members>
+        <member name="T:EventMeena.API.Controllers.AuthController">
+            <summary>
+            Authentication and user management controller
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.AuthController.Register(EventMeena.Application.DTOs.Auth.RegisterRequest)">
+            <summary>
+            تسجيل مستخدم جديد
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.AuthController.Login(EventMeena.Application.DTOs.Auth.LoginRequest)">
+            <summary>
+            تسجيل الدخول
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.AuthController.RefreshToken(EventMeena.Application.DTOs.Auth.RefreshTokenRequest)">
+            <summary>
+            تحديث التوكن
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.AuthController.Logout">
+            <summary>
+            تسجيل الخروج
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.AuthController.GetCurrentUser">
+            <summary>
+            الحصول على معلومات المستخدم الحالي
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.AuthController.UpdateProfile(EventMeena.Application.DTOs.Auth.UpdateProfileRequest)">
+            <summary>
+            تحديث الملف الشخصي
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.AuthController.ChangePassword(EventMeena.Application.DTOs.Auth.ChangePasswordRequest)">
+            <summary>
+            تغيير كلمة المرور
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.AuthController.ForgotPassword(EventMeena.Application.DTOs.Auth.ForgotPasswordRequest)">
+            <summary>
+            نسيت كلمة المرور - إرسال رابط إعادة التعيين
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.AuthController.ResetPassword(EventMeena.Application.DTOs.Auth.ResetPasswordRequest)">
+            <summary>
+            إعادة تعيين كلمة المرور
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Controllers.BaseApiController">
+            <summary>
+            Base controller with common functionality
+            </summary>
+        </member>
+        <member name="P:EventMeena.API.Controllers.BaseApiController.CurrentUserId">
+            <summary>
+            Gets the current authenticated user's ID
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.BaseApiController.Success``1(``0,System.String)">
+            <summary>
+            Returns a success response with data
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.BaseApiController.Created``1(``0,System.String)">
+            <summary>
+            Returns a success response for created resource
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.BaseApiController.NotFoundResponse``1(System.String)">
+            <summary>
+            Returns a not found response
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.BaseApiController.BadRequestResponse``1(System.String)">
+            <summary>
+            Returns a bad request response
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.BaseApiController.UnauthorizedResponse``1(System.String)">
+            <summary>
+            Returns an unauthorized response
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.BaseApiController.ServerErrorResponse``1(System.String)">
+            <summary>
+            Returns a server error response
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.BaseApiController.SuccessNoContent(System.String)">
+            <summary>
+            Returns a success response without data
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.BaseApiController.NotFoundNoContent(System.String)">
+            <summary>
+            Returns a not found response without data
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.BaseApiController.BadRequestNoContent(System.String)">
+            <summary>
+            Returns a bad request response without data
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Controllers.ComponentsController">
+            <summary>
+            Components management controller
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ComponentsController.GetBySectionId(System.Guid)">
+            <summary>
+            الحصول على مكونات قسم معين
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ComponentsController.GetById(System.Guid)">
+            <summary>
+            الحصول على مكون بالـ ID
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ComponentsController.Create(System.Guid,EventMeena.Application.DTOs.Components.CreateComponentRequest)">
+            <summary>
+            إنشاء مكون جديد
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ComponentsController.Update(System.Guid,EventMeena.Application.DTOs.Components.UpdateComponentRequest)">
+            <summary>
+            تحديث مكون
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ComponentsController.Delete(System.Guid)">
+            <summary>
+            حذف مكون
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ComponentsController.Reorder(System.Guid,EventMeena.Application.DTOs.Components.ReorderComponentsRequest)">
+            <summary>
+            إعادة ترتيب المكونات
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Controllers.ContactsController">
+            <summary>
+            Contacts management controller
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ContactsController.GetContacts(EventMeena.Application.DTOs.Common.PaginationParams)">
+            <summary>
+            الحصول على جميع جهات اتصال المستخدم مع Pagination
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ContactsController.GetContactsWithGroups">
+            <summary>
+            الحصول على جميع جهات اتصال المستخدم مع المجموعات
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ContactsController.Search(System.String)">
+            <summary>
+            البحث في جهات الاتصال
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ContactsController.GetById(System.Guid)">
+            <summary>
+            الحصول على جهة اتصال بالـ ID
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ContactsController.GetByIdWithGroups(System.Guid)">
+            <summary>
+            الحصول على جهة اتصال مع المجموعات
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ContactsController.Create(EventMeena.Application.DTOs.Contacts.CreateContactRequest)">
+            <summary>
+            إنشاء جهة اتصال جديدة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ContactsController.Update(System.Guid,EventMeena.Application.DTOs.Contacts.UpdateContactRequest)">
+            <summary>
+            تحديث جهة اتصال
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ContactsController.Delete(System.Guid)">
+            <summary>
+            حذف جهة اتصال
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ContactsController.Import(System.Collections.Generic.List{EventMeena.Application.DTOs.Contacts.CreateContactRequest})">
+            <summary>
+            استيراد جهات اتصال متعددة
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Controllers.EventsController">
+            <summary>
+            Events management controller
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.GetEvents(EventMeena.Application.DTOs.Common.PaginationParams)">
+            <summary>
+            الحصول على جميع أحداث المستخدم مع Pagination
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.GetEventsByStatus(EventMeena.Domain.Enums.EventStatus)">
+            <summary>
+            الحصول على أحداث المستخدم حسب الحالة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.GetEventsByType(EventMeena.Domain.Enums.EventType)">
+            <summary>
+            الحصول على أحداث المستخدم حسب النوع
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.GetDashboardStats">
+            <summary>
+            الحصول على إحصائيات لوحة التحكم
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.GetById(System.Guid)">
+            <summary>
+            الحصول على حدث بالـ ID
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.GetByIdWithFullDetails(System.Guid)">
+            <summary>
+            الحصول على حدث بالتفاصيل الكاملة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.Create(EventMeena.Application.DTOs.Events.CreateEventRequest)">
+            <summary>
+            إنشاء حدث جديد
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.CreateWithSections(EventMeena.Application.DTOs.Events.CreateEventWithSectionsRequest)">
+            <summary>
+            إنشاء حدث كامل مع أقسامه ومكوناته
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.Update(System.Guid,EventMeena.Application.DTOs.Events.UpdateEventRequest)">
+            <summary>
+            تحديث حدث
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.UpdateWithSections(System.Guid,EventMeena.Application.DTOs.Events.UpdateEventWithSectionsRequest)">
+            <summary>
+            تحديث حدث كامل مع أقسامه ومكوناته
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.UpdateStatus(System.Guid,EventMeena.Application.DTOs.Events.UpdateStatusRequest)">
+            <summary>
+            تحديث حالة الحدث فقط
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.Delete(System.Guid)">
+            <summary>
+            حذف حدث
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.Duplicate(System.Guid)">
+            <summary>
+            نسخ حدث
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.Publish(System.Guid)">
+            <summary>
+            نشر حدث
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.Close(System.Guid)">
+            <summary>
+            إغلاق حدث
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.Send(System.Guid,EventMeena.Application.DTOs.Events.SendEventRequest)">
+            <summary>
+            إرسال حدث لجهات الاتصال أو المجموعات
+            </summary>
+            <param name="id">معرف الحدث</param>
+            <param name="request">بيانات الإرسال</param>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.SendReminder(System.Guid,System.Collections.Generic.List{System.Guid})">
+            <summary>
+            إرسال تذكير للمشاركة في حدث
+            </summary>
+            <param name="id">معرف الحدث</param>
+            <param name="contactIds">قائمة معرفات جهات الاتصال</param>
+        </member>
+        <member name="M:EventMeena.API.Controllers.EventsController.GetSendHistory(System.Guid)">
+            <summary>
+            الحصول على سجل إرسالات الحدث
+            </summary>
+            <param name="id">معرف الحدث</param>
+        </member>
+        <member name="T:EventMeena.API.Controllers.FilesController">
+            <summary>
+            إدارة الملفات - رفع وحذف الملفات
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.FilesController.Upload(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            رفع ملف جديد
+            </summary>
+            <param name="file">الملف المراد رفعه</param>
+            <param name="type">نوع الملف (image, video, pdf, signature)</param>
+            <returns>معلومات الملف المرفوع</returns>
+            <response code="200">تم رفع الملف بنجاح</response>
+            <response code="400">خطأ في البيانات المرسلة</response>
+        </member>
+        <member name="M:EventMeena.API.Controllers.FilesController.Delete(System.String)">
+            <summary>
+            حذف ملف
+            </summary>
+            <param name="fileUrl">رابط الملف النسبي</param>
+            <returns>نتيجة الحذف</returns>
+        </member>
+        <member name="T:EventMeena.API.Controllers.GroupsController">
+            <summary>
+            Groups management controller
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.GroupsController.GetGroups">
+            <summary>
+            الحصول على جميع مجموعات المستخدم
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.GroupsController.GetGroupsWithContacts">
+            <summary>
+            الحصول على جميع مجموعات المستخدم مع جهات الاتصال
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.GroupsController.GetById(System.Guid)">
+            <summary>
+            الحصول على مجموعة بالـ ID
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.GroupsController.GetByIdWithContacts(System.Guid)">
+            <summary>
+            الحصول على مجموعة مع جهات الاتصال
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.GroupsController.Create(EventMeena.Application.DTOs.Groups.CreateGroupRequest)">
+            <summary>
+            إنشاء مجموعة جديدة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.GroupsController.Update(System.Guid,EventMeena.Application.DTOs.Groups.UpdateGroupRequest)">
+            <summary>
+            تحديث مجموعة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.GroupsController.Delete(System.Guid)">
+            <summary>
+            حذف مجموعة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.GroupsController.AddContacts(System.Guid,EventMeena.Application.DTOs.Groups.AddContactsToGroupRequest)">
+            <summary>
+            إضافة جهات اتصال إلى مجموعة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.GroupsController.RemoveContacts(System.Guid,EventMeena.Application.DTOs.Groups.RemoveContactsFromGroupRequest)">
+            <summary>
+            إزالة جهات اتصال من مجموعة
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Controllers.PublicController">
+            <summary>
+            Public endpoints controller (no authentication required)
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.PublicController.GetEventByShareCode(System.String)">
+            <summary>
+            الحصول على حدث بواسطة رمز المشاركة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.PublicController.GetEventForPreview(System.Guid)">
+            <summary>
+            الحصول على حدث للمعاينة (بدون التحقق من الحالة) - للقراءة فقط
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.PublicController.IncrementViewCount(System.Guid)">
+            <summary>
+            زيادة عدد مشاهدات الحدث
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.PublicController.HealthCheck">
+            <summary>
+            فحص صحة API
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Controllers.HealthCheckResponse">
+            <summary>
+            Health check response DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Controllers.ResponsesController">
+            <summary>
+            Responses management controller
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.GetByEventId(System.Guid,EventMeena.Application.DTOs.Common.PaginationParams)">
+            <summary>
+            الحصول على ردود حدث معين مع Pagination
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.GetEventStats(System.Guid)">
+            <summary>
+            الحصول على إحصائيات ردود حدث
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.GetById(System.Guid)">
+            <summary>
+            الحصول على رد بالـ ID
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.StartResponse(System.Guid,EventMeena.Application.DTOs.Responses.StartResponseRequest)">
+            <summary>
+            بدء استجابة جديدة (عام - بدون مصادقة)
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.SubmitSectionAnswers(System.Guid,EventMeena.Application.DTOs.Responses.SubmitSectionAnswersRequest)">
+            <summary>
+            إرسال إجابات قسم (عام - بدون مصادقة)
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.CompleteResponse(System.Guid,EventMeena.Application.DTOs.Responses.CompleteResponseRequest)">
+            <summary>
+            إكمال الاستجابة (عام - بدون مصادقة)
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.GetExistingResponse(System.Guid,System.String)">
+            <summary>
+            الحصول على رد سابق للمشارك (للتعديل) - عام بدون مصادقة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.UpdateResponseAnswers(System.Guid,EventMeena.Application.DTOs.Responses.UpdateResponseAnswersRequest)">
+            <summary>
+            تحديث إجابات رد موجود (للتعديل) - عام بدون مصادقة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.Delete(System.Guid)">
+            <summary>
+            حذف رد
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.ResponsesController.DeleteByEventId(System.Guid)">
+            <summary>
+            حذف جميع ردود حدث
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Controllers.SectionsController">
+            <summary>
+            Sections management controller
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.SectionsController.GetByEventId(System.Guid)">
+            <summary>
+            الحصول على أقسام حدث معين
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.SectionsController.GetByEventIdWithComponents(System.Guid)">
+            <summary>
+            الحصول على أقسام حدث مع المكونات
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.SectionsController.GetById(System.Guid)">
+            <summary>
+            الحصول على قسم بالـ ID
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.SectionsController.GetByIdWithComponents(System.Guid)">
+            <summary>
+            الحصول على قسم مع المكونات
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.SectionsController.Create(System.Guid,EventMeena.Application.DTOs.Sections.CreateSectionRequest)">
+            <summary>
+            إنشاء قسم جديد
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.SectionsController.Update(System.Guid,EventMeena.Application.DTOs.Sections.UpdateSectionRequest)">
+            <summary>
+            تحديث قسم
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.SectionsController.Delete(System.Guid)">
+            <summary>
+            حذف قسم
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.SectionsController.Reorder(System.Guid,EventMeena.Application.DTOs.Sections.ReorderSectionsRequest)">
+            <summary>
+            إعادة ترتيب الأقسام
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Controllers.TemplatesController">
+            <summary>
+            Templates management controller
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.GetUserTemplates">
+            <summary>
+            الحصول على جميع قوالب المستخدم
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.GetUserTemplatesByType(EventMeena.Domain.Enums.EventType)">
+            <summary>
+            الحصول على قوالب المستخدم حسب النوع
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.GetPublicTemplates">
+            <summary>
+            الحصول على القوالب العامة
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.GetPublicTemplatesByType(EventMeena.Domain.Enums.EventType)">
+            <summary>
+            الحصول على القوالب العامة حسب النوع
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.GetById(System.Guid)">
+            <summary>
+            الحصول على قالب بالـ ID
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.Create(EventMeena.Application.DTOs.Templates.CreateTemplateRequest)">
+            <summary>
+            إنشاء قالب جديد
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.CreateFromEvent(EventMeena.Application.DTOs.Templates.CreateTemplateFromEventRequest)">
+            <summary>
+            إنشاء قالب من حدث موجود
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.Update(System.Guid,EventMeena.Application.DTOs.Templates.UpdateTemplateRequest)">
+            <summary>
+            تحديث قالب
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.Delete(System.Guid)">
+            <summary>
+            حذف قالب
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Controllers.TemplatesController.UseTemplate(System.Guid)">
+            <summary>
+            استخدام قالب لإنشاء حدث جديد
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Extensions.ServiceExtensions">
+            <summary>
+            Extension methods for service registration
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Extensions.ServiceExtensions.AddDatabaseServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Register database services
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Extensions.ServiceExtensions.AddApplicationServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Register application services
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Extensions.ServiceExtensions.AddJwtAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Register JWT authentication
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Extensions.ServiceExtensions.AddSwaggerServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Register Swagger/OpenAPI
+            </summary>
+        </member>
+        <member name="M:EventMeena.API.Extensions.ServiceExtensions.AddCorsPolicy(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Register CORS
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Middleware.ExceptionMiddleware">
+            <summary>
+            Global exception handling middleware
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Middleware.ExceptionMiddlewareExtensions">
+            <summary>
+            Extension method for adding exception middleware
+            </summary>
+        </member>
+        <member name="T:EventMeena.API.Services.CurrentUserService">
+            <summary>
+            Current user service implementation using HttpContext
+            </summary>
+        </member>
+        <member name="P:EventMeena.API.Services.CurrentUserService.UserId">
+            <inheritdoc />
+        </member>
+        <member name="P:EventMeena.API.Services.CurrentUserService.UserName">
+            <inheritdoc />
+        </member>
+        <member name="P:EventMeena.API.Services.CurrentUserService.Email">
+            <inheritdoc />
+        </member>
+        <member name="P:EventMeena.API.Services.CurrentUserService.IsAuthenticated">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

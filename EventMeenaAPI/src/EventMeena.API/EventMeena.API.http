@@ -1,0 +1,6 @@
+@EventMeena.API_HostAddress = http://localhost:5250
+
+GET {{EventMeena.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

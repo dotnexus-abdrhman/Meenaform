@@ -1,0 +1,17 @@
+using EventMeena.Domain.Entities;
+
+namespace EventMeena.Application.Interfaces;
+
+/// <summary>
+/// Contact Repository Interface
+/// </summary>
+public interface IContactRepository : IGenericRepository<Contact>
+{
+    Task<IReadOnlyList<Contact>> GetByUserIdAsync(Guid userId);
+    Task<IReadOnlyList<Contact>> GetByUserIdWithGroupsAsync(Guid userId);
+    Task<IReadOnlyList<Contact>> GetByGroupIdAsync(Guid groupId);
+    Task<Contact?> GetByEmailAndUserIdAsync(string email, Guid userId);
+    Task<bool> ExistsByEmailAndUserIdAsync(string email, Guid userId);
+    Task<IReadOnlyList<Contact>> SearchAsync(Guid userId, string searchTerm);
+}
+

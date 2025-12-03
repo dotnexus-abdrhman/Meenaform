@@ -1,0 +1,169 @@
+/**
+ * Enhanced HTML Editor Styles
+ * Custom styles for react-resizable handles
+ */
+
+/* Resizable Handle Styles - Content-First Resize System */
+.react-resizable {
+  position: relative;
+}
+
+.react-resizable-handle {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  box-sizing: border-box;
+  background-image: none;
+  background-color: #3b82f6;
+  border: 3px solid white;
+  border-radius: 50%;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  /* HIDDEN BY DEFAULT */
+  display: none;
+  opacity: 0;
+}
+
+/* Show handles ONLY when element is selected */
+.element-selected .react-resizable-handle {
+  display: block;
+  opacity: 0.85;
+}
+
+.element-selected .react-resizable-handle:hover {
+  opacity: 1;
+  transform: scale(1.25);
+  background-color: #2563eb;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4), 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.react-resizable-handle-se {
+  bottom: -12px;
+  right: -12px;
+  cursor: se-resize;
+}
+
+.react-resizable-handle-sw {
+  bottom: -12px;
+  left: -12px;
+  cursor: sw-resize;
+}
+
+.react-resizable-handle-ne {
+  top: -12px;
+  right: -12px;
+  cursor: ne-resize;
+}
+
+.react-resizable-handle-nw {
+  top: -12px;
+  left: -12px;
+  cursor: nw-resize;
+}
+
+/* Touch-friendly handles for mobile/tablet */
+@media (pointer: coarse) {
+  .react-resizable-handle {
+    width: 32px;
+    height: 32px;
+    border-width: 4px;
+  }
+
+  .react-resizable-handle-se {
+    bottom: -16px;
+    right: -16px;
+  }
+
+  .react-resizable-handle-sw {
+    bottom: -16px;
+    left: -16px;
+  }
+
+  .react-resizable-handle-ne {
+    top: -16px;
+    right: -16px;
+  }
+
+  .react-resizable-handle-nw {
+    top: -16px;
+    left: -16px;
+  }
+}
+
+/* Show handles when element is selected */
+.ring-4.ring-blue-500 .react-resizable-handle,
+.ring-4.ring-purple-500 .react-resizable-handle,
+.ring-4.ring-green-500 .react-resizable-handle {
+  opacity: 1;
+}
+
+/* Dragging State */
+.react-draggable-dragging {
+  opacity: 0.8;
+  z-index: 1000;
+}
+
+/* Selection Styles */
+.element-selected {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Grid Background */
+.grid-background {
+  background-image: 
+    linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+    linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+}
+
+/* Smooth Transitions */
+.element-transition {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Table Cell Editing */
+td[contenteditable="true"]:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+  background-color: #eff6ff;
+}
+
+/* Text Element Editing */
+div[contenteditable="true"]:focus {
+  outline: 2px solid #a855f7;
+  outline-offset: -2px;
+  background-color: #faf5ff;
+}
+
+/* Title Editing */
+h3[contenteditable="true"]:focus {
+  outline: none !important;
+}
+
+/* Resize Tooltip Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.resize-tooltip {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Smooth font rendering for all text */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+

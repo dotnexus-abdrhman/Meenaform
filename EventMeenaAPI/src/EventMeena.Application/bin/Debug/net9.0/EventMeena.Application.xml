@@ -1,0 +1,1058 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EventMeena.Application</name>
+    </assembly>
+    <members>
+        <member name="T:EventMeena.Application.DTOs.Auth.AuthResponse">
+            <summary>
+            Authentication response DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Auth.ForgotPasswordRequest">
+            <summary>
+            طلب استعادة كلمة المرور
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Auth.ForgotPasswordRequest.Email">
+            <summary>
+            البريد الإلكتروني للمستخدم
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Auth.LoginRequest">
+            <summary>
+            User login request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Auth.RefreshTokenRequest">
+            <summary>
+            Refresh token request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Auth.RegisterRequest">
+            <summary>
+            User registration request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Auth.ResetPasswordRequest">
+            <summary>
+            طلب إعادة تعيين كلمة المرور
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Auth.ResetPasswordRequest.Email">
+            <summary>
+            البريد الإلكتروني للمستخدم
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Auth.ResetPasswordRequest.Token">
+            <summary>
+            رمز إعادة التعيين
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Auth.ResetPasswordRequest.NewPassword">
+            <summary>
+            كلمة المرور الجديدة
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Auth.ResetPasswordRequest.ConfirmPassword">
+            <summary>
+            تأكيد كلمة المرور الجديدة
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Auth.UserDto">
+            <summary>
+            User profile DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Auth.UpdateProfileRequest">
+            <summary>
+            Update user profile request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Auth.ChangePasswordRequest">
+            <summary>
+            Change password request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Common.ApiResponse`1">
+            <summary>
+            Standard API Response wrapper
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Common.ApiResponse">
+            <summary>
+            Non-generic API Response for operations without return data
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Common.PagedResult`1">
+            <summary>
+            Paginated result wrapper
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Common.PaginationParams">
+            <summary>
+            Pagination request parameters
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Components.ComponentDto">
+            <summary>
+            Component response DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Components.CreateComponentRequest">
+            <summary>
+            Create component request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Components.UpdateComponentRequest">
+            <summary>
+            Update component request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Components.ReorderComponentsRequest">
+            <summary>
+            Reorder components request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Contacts.ContactDto">
+            <summary>
+            Contact response DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Contacts.ContactStatsDto">
+            <summary>
+            إحصائيات جهة الاتصال
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Contacts.ContactWithGroupsDto">
+            <summary>
+            Contact with groups DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Contacts.CreateContactRequest">
+            <summary>
+            Create contact request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Contacts.UpdateContactRequest">
+            <summary>
+            Update contact request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.CreateEventRequest">
+            <summary>
+            Create event request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.CreateEventWithSectionsRequest">
+            <summary>
+            Create event with sections and components request DTO
+            يسمح بإنشاء حدث كامل مع أقسامه ومكوناته في طلب واحد
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.CreateEventWithSectionsRequest.Sections">
+            <summary>
+            الأقسام مع مكوناتها
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.CreateSectionWithComponentsRequest">
+            <summary>
+            Create section with components request DTO
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.CreateSectionWithComponentsRequest.Components">
+            <summary>
+            المكونات في هذا القسم
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.DashboardStatsDto">
+            <summary>
+            Dashboard statistics DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.DailyStatsDto">
+            <summary>
+            Daily statistics for chart
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.EventDto">
+            <summary>
+            Event response DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.EventWithSectionsDto">
+            <summary>
+            Event with sections DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.EventWithFullDetailsDto">
+            <summary>
+            Event with full details (sections and components) DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.EventListItemDto">
+            <summary>
+            Event list item DTO (lightweight)
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.EventListItemDto.CompletionRate">
+            <summary>
+            معدل الإكمال (نسبة مئوية)
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.SendEventRequest">
+            <summary>
+            طلب إرسال حدث لجهات الاتصال أو المجموعات
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendEventRequest.ContactIds">
+            <summary>
+            قائمة معرفات جهات الاتصال المراد إرسال الحدث لها
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendEventRequest.GroupIds">
+            <summary>
+            قائمة معرفات المجموعات المراد إرسال الحدث لها
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendEventRequest.Emails">
+            <summary>
+            قائمة إيميلات إضافية (اختياري)
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendEventRequest.CustomMessage">
+            <summary>
+            رسالة مخصصة للإرسال (اختياري)
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.SendEventResponse">
+            <summary>
+            نتيجة إرسال الحدث
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendEventResponse.SuccessCount">
+            <summary>
+            عدد الإرسالات الناجحة
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendEventResponse.FailureCount">
+            <summary>
+            عدد الإرسالات الفاشلة
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendEventResponse.TotalRecipients">
+            <summary>
+            إجمالي عدد المستلمين
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendEventResponse.Errors">
+            <summary>
+            قائمة الأخطاء (إن وجدت)
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendEventResponse.SentAt">
+            <summary>
+            تاريخ الإرسال
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.SendHistoryDto">
+            <summary>
+            سجل إرسال الحدث
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.Id">
+            <summary>
+            معرف السجل
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.EventId">
+            <summary>
+            معرف الحدث
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.ContactId">
+            <summary>
+            معرف جهة الاتصال
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.Method">
+            <summary>
+            طريقة الإرسال (Email, WhatsApp, SMS)
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.Status">
+            <summary>
+            حالة الإرسال (Pending, Sent, Failed, Delivered)
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.RecipientEmail">
+            <summary>
+            البريد الإلكتروني للمستلم
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.RecipientPhone">
+            <summary>
+            رقم هاتف المستلم
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.Subject">
+            <summary>
+            عنوان الرسالة
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.SentAt">
+            <summary>
+            تاريخ الإرسال
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.SendHistoryDto.ErrorMessage">
+            <summary>
+            رسالة الخطأ (في حالة الفشل)
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.UpdateEventRequest">
+            <summary>
+            Update event request DTO
+            جميع الحقول nullable لدعم التحديث الجزئي
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.UpdateEventWithSectionsRequest">
+            <summary>
+            Update event with sections and components request DTO
+            يسمح بتحديث حدث كامل مع أقسامه ومكوناته في طلب واحد
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.UpdateEventWithSectionsRequest.Sections">
+            <summary>
+            الأقسام مع مكوناتها - سيتم استبدال جميع الأقسام الحالية بهذه
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.UpdateSectionWithComponentsRequest">
+            <summary>
+            Update section with components request DTO
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.UpdateSectionWithComponentsRequest.Id">
+            <summary>
+            ID القسم - إذا كان null يتم إنشاء قسم جديد
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.UpdateSectionWithComponentsRequest.Components">
+            <summary>
+            المكونات في هذا القسم
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.UpdateComponentInSectionRequest">
+            <summary>
+            Update component in section request DTO
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Events.UpdateComponentInSectionRequest.Id">
+            <summary>
+            ID المكون - إذا كان null يتم إنشاء مكون جديد
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Events.UpdateStatusRequest">
+            <summary>
+            Update event status only request DTO
+            يسمح بتحديث حالة الحدث فقط دون المساس بالبيانات الأخرى
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Files.FileUploadResponse">
+            <summary>
+            استجابة رفع الملف
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Files.FileUploadResponse.FileUrl">
+            <summary>
+            رابط الملف النسبي
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Files.FileUploadResponse.FileName">
+            <summary>
+            اسم الملف الأصلي
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Files.FileUploadResponse.FileSize">
+            <summary>
+            حجم الملف بالبايت
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Files.FileUploadResponse.FileType">
+            <summary>
+            نوع الملف (MIME Type)
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.DTOs.Files.FileUploadResponse.UploadedAt">
+            <summary>
+            تاريخ الرفع
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Groups.CreateGroupRequest">
+            <summary>
+            Create group request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Groups.GroupDto">
+            <summary>
+            Group response DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Groups.GroupStatsDto">
+            <summary>
+            إحصائيات المجموعة
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Groups.GroupWithContactsDto">
+            <summary>
+            Group with contacts DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Groups.UpdateGroupRequest">
+            <summary>
+            Update group request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Groups.AddContactsToGroupRequest">
+            <summary>
+            Add contacts to group request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Groups.RemoveContactsFromGroupRequest">
+            <summary>
+            Remove contacts from group request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Responses.ResponseDto">
+            <summary>
+            Response DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Responses.ResponseStatsDto">
+            <summary>
+            Response statistics DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Responses.StartResponseRequest">
+            <summary>
+            Start response request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Responses.SubmitAnswerRequest">
+            <summary>
+            Submit answer request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Responses.SubmitSectionAnswersRequest">
+            <summary>
+            Submit section answers request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Responses.CompleteResponseRequest">
+            <summary>
+            Complete response request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Responses.UpdateResponseAnswersRequest">
+            <summary>
+            Update response answers request DTO - لتعديل رد موجود
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Sections.CreateSectionRequest">
+            <summary>
+            Create section request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Sections.SectionDto">
+            <summary>
+            Section response DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Sections.SectionWithComponentsDto">
+            <summary>
+            Section with components DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Sections.UpdateSectionRequest">
+            <summary>
+            Update section request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Sections.ReorderSectionsRequest">
+            <summary>
+            Reorder sections request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Templates.CreateTemplateRequest">
+            <summary>
+            Create template request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Templates.CreateTemplateFromEventRequest">
+            <summary>
+            Create template from event request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Templates.TemplateDto">
+            <summary>
+            Template response DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Templates.TemplateListItemDto">
+            <summary>
+            Template list item DTO (lightweight)
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.DTOs.Templates.UpdateTemplateRequest">
+            <summary>
+            Update template request DTO
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.IComponentRepository">
+            <summary>
+            Component Repository Interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.IContactRepository">
+            <summary>
+            Contact Repository Interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.IEventRepository">
+            <summary>
+            Event Repository Interface
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Interfaces.IEventRepository.GetDailyEventCountsAsync(System.Guid,System.DateTime,System.DateTime)">
+            <summary>
+            الحصول على عدد الأحداث المنشأة لكل يوم خلال فترة محددة
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Interfaces.IEventRepository.GetTotalStatsAsync(System.Guid)">
+            <summary>
+            الحصول على إحصائيات الأحداث الإجمالية لمستخدم معين
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Interfaces.IEventRepository.GetEventsCountAsync(System.Guid,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            الحصول على عدد الأحداث خلال فترة محددة
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.IGenericRepository`1">
+            <summary>
+            Generic Repository Interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.IGroupRepository">
+            <summary>
+            Group Repository Interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.IResponseRepository">
+            <summary>
+            Response Repository Interface
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Interfaces.IResponseRepository.GetDailyResponseCountsAsync(System.Guid,System.DateTime,System.DateTime)">
+            <summary>
+            الحصول على عدد الردود لكل يوم خلال فترة محددة لمستخدم معين
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Interfaces.IResponseRepository.GetCompletedResponsesCountAsync(System.Guid,System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            الحصول على إجمالي الردود المكتملة لمستخدم معين خلال فترة محددة
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.ISectionRepository">
+            <summary>
+            Section Repository Interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.ISendHistoryRepository">
+            <summary>
+            SendHistory Repository Interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.IUnitOfWork">
+            <summary>
+            Unit of Work Interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.IUserRepository">
+            <summary>
+            User Repository Interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Interfaces.IUserTemplateRepository">
+            <summary>
+            UserTemplate Repository Interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Mappings.MappingProfile">
+            <summary>
+            AutoMapper Profile for Entity-DTO mappings
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Mappings.MappingProfile.ParseTags(System.String)">
+            <summary>
+            تحويل JSON string إلى قائمة نصوص
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Mappings.MappingProfile.SerializeTags(System.Collections.Generic.List{System.String})">
+            <summary>
+            تحويل قائمة نصوص إلى JSON string
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Mappings.MappingProfile.CalculateContactStats(System.Collections.Generic.ICollection{EventMeena.Domain.Entities.SendHistory})">
+            <summary>
+            حساب إحصائيات جهة الاتصال من سجل الإرسال
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Mappings.MappingProfile.CalculateGroupStats(System.Collections.Generic.ICollection{EventMeena.Domain.Entities.ContactGroup})">
+            <summary>
+            حساب إحصائيات المجموعة من سجلات الإرسال لجهات الاتصال فيها
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.AuthService">
+            <summary>
+            Authentication service implementation
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.ComponentService">
+            <summary>
+            Component service implementation
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.ContactService">
+            <summary>
+            Contact service implementation
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.EventService">
+            <summary>
+            Event service implementation
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Implementations.EventService.CreateWithSectionsAsync(System.Guid,EventMeena.Application.DTOs.Events.CreateEventWithSectionsRequest)">
+            <summary>
+            إنشاء حدث كامل مع أقسامه ومكوناته في طلب واحد
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Implementations.EventService.UpdateWithSectionsAsync(System.Guid,System.Guid,EventMeena.Application.DTOs.Events.UpdateEventWithSectionsRequest)">
+            <summary>
+            تحديث حدث كامل مع أقسامه ومكوناته في طلب واحد
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Implementations.EventService.UpdateStatusAsync(System.Guid,System.Guid,EventMeena.Domain.Enums.EventStatus)">
+            <summary>
+            تحديث حالة الحدث فقط دون المساس بالبيانات الأخرى
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.FileService">
+            <summary>
+            خدمة إدارة الملفات
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.GroupService">
+            <summary>
+            Group service implementation
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.ResponseService">
+            <summary>
+            Response service implementation
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.SectionService">
+            <summary>
+            Section service implementation
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.SendEventService">
+            <summary>
+            Service implementation for sending events to contacts
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Implementations.SendEventService.SendEventToContactAsync(System.Guid,System.Guid,System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventMeena.Application.Services.Implementations.SendEventService.SendEventToContactsAsync(System.Guid,System.Collections.Generic.IEnumerable{System.Guid},System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventMeena.Application.Services.Implementations.SendEventService.SendEventToGroupAsync(System.Guid,System.Guid,System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventMeena.Application.Services.Implementations.SendEventService.SendEventReminderAsync(System.Guid,System.Collections.Generic.IEnumerable{System.Guid},System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:EventMeena.Application.Services.Implementations.SendEventService.GetEventSendHistoryAsync(System.Guid,System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="T:EventMeena.Application.Services.Implementations.TemplateService">
+            <summary>
+            Template service implementation
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.IAuthService">
+            <summary>
+            Authentication service interface
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IAuthService.ForgotPasswordAsync(EventMeena.Application.DTOs.Auth.ForgotPasswordRequest)">
+            <summary>
+            طلب إعادة تعيين كلمة المرور (نسيت كلمة المرور)
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IAuthService.ResetPasswordAsync(EventMeena.Application.DTOs.Auth.ResetPasswordRequest)">
+            <summary>
+            إعادة تعيين كلمة المرور باستخدام الرمز
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.IComponentService">
+            <summary>
+            Component service interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.IContactService">
+            <summary>
+            Contact service interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.ICurrentUserService">
+            <summary>
+            Current user service interface for accessing authenticated user info
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.Services.Interfaces.ICurrentUserService.UserId">
+            <summary>
+            الحصول على ID المستخدم الحالي
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.Services.Interfaces.ICurrentUserService.UserName">
+            <summary>
+            الحصول على اسم المستخدم الحالي
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.Services.Interfaces.ICurrentUserService.Email">
+            <summary>
+            الحصول على بريد المستخدم الحالي
+            </summary>
+        </member>
+        <member name="P:EventMeena.Application.Services.Interfaces.ICurrentUserService.IsAuthenticated">
+            <summary>
+            التحقق من تسجيل دخول المستخدم
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.IEmailService">
+            <summary>
+            Email service interface for sending emails
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEmailService.SendEmailAsync(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            إرسال بريد إلكتروني واحد
+            </summary>
+            <param name="toEmail">البريد الإلكتروني للمستلم</param>
+            <param name="toName">اسم المستلم</param>
+            <param name="subject">عنوان الرسالة</param>
+            <param name="htmlContent">محتوى الرسالة بصيغة HTML</param>
+            <param name="plainTextContent">محتوى الرسالة بصيغة نص عادي (اختياري)</param>
+            <returns>نجاح أو فشل الإرسال</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEmailService.SendBulkEmailAsync(System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.String}},System.String,System.String,System.String)">
+            <summary>
+            إرسال بريد إلكتروني لعدة مستلمين
+            </summary>
+            <param name="recipients">قائمة المستلمين (البريد، الاسم)</param>
+            <param name="subject">عنوان الرسالة</param>
+            <param name="htmlContent">محتوى الرسالة بصيغة HTML</param>
+            <param name="plainTextContent">محتوى الرسالة بصيغة نص عادي (اختياري)</param>
+            <returns>عدد الرسائل المرسلة بنجاح</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEmailService.SendEventInvitationAsync(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            إرسال دعوة للمشاركة في حدث
+            </summary>
+            <param name="toEmail">البريد الإلكتروني للمستلم</param>
+            <param name="toName">اسم المستلم</param>
+            <param name="eventTitle">عنوان الحدث</param>
+            <param name="eventDescription">وصف الحدث</param>
+            <param name="eventLink">رابط الحدث</param>
+            <returns>نجاح أو فشل الإرسال</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEmailService.SendEventReminderAsync(System.String,System.String,System.String,System.String,System.Nullable{System.DateTime})">
+            <summary>
+            إرسال تذكير بالمشاركة في حدث
+            </summary>
+            <param name="toEmail">البريد الإلكتروني للمستلم</param>
+            <param name="toName">اسم المستلم</param>
+            <param name="eventTitle">عنوان الحدث</param>
+            <param name="eventLink">رابط الحدث</param>
+            <param name="endDate">تاريخ انتهاء الحدث</param>
+            <returns>نجاح أو فشل الإرسال</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEmailService.SendPasswordResetEmailAsync(System.String,System.String,System.String)">
+            <summary>
+            إرسال رابط إعادة تعيين كلمة المرور
+            </summary>
+            <param name="toEmail">البريد الإلكتروني للمستلم</param>
+            <param name="toName">اسم المستلم</param>
+            <param name="resetLink">رابط إعادة التعيين</param>
+            <returns>نجاح أو فشل الإرسال</returns>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.IEventService">
+            <summary>
+            Event service interface
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEventService.GetForPreviewAsync(System.Guid)">
+            <summary>
+            الحصول على حدث للمعاينة (بدون التحقق من الحالة) - للقراءة فقط
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEventService.CreateWithSectionsAsync(System.Guid,EventMeena.Application.DTOs.Events.CreateEventWithSectionsRequest)">
+            <summary>
+            إنشاء حدث كامل مع أقسامه ومكوناته في طلب واحد
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEventService.UpdateWithSectionsAsync(System.Guid,System.Guid,EventMeena.Application.DTOs.Events.UpdateEventWithSectionsRequest)">
+            <summary>
+            تحديث حدث كامل مع أقسامه ومكوناته في طلب واحد
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEventService.UpdateStatusAsync(System.Guid,System.Guid,EventMeena.Domain.Enums.EventStatus)">
+            <summary>
+            تحديث حالة الحدث فقط دون المساس بالبيانات الأخرى
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IEventService.GetDashboardStatsAsync(System.Guid)">
+            <summary>
+            الحصول على إحصائيات لوحة التحكم
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.IFileService">
+            <summary>
+            خدمة إدارة الملفات
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IFileService.UploadFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            رفع ملف
+            </summary>
+            <param name="file">الملف المرفوع</param>
+            <param name="fileType">نوع الملف (image, video, pdf, signature)</param>
+            <returns>معلومات الملف المرفوع</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IFileService.DeleteFileAsync(System.String)">
+            <summary>
+            حذف ملف
+            </summary>
+            <param name="fileUrl">رابط الملف النسبي</param>
+            <returns>نجاح العملية</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IFileService.IsValidFileType(System.String,System.String)">
+            <summary>
+            التحقق من صحة نوع الملف
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IFileService.IsValidFileSize(System.Int64,System.String)">
+            <summary>
+            التحقق من حجم الملف
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.IGroupService">
+            <summary>
+            Group service interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.IJwtService">
+            <summary>
+            JWT Service interface for token generation and validation
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IJwtService.GenerateAccessToken(EventMeena.Domain.Entities.User)">
+            <summary>
+            توليد Access Token للمستخدم
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IJwtService.GenerateRefreshToken">
+            <summary>
+            توليد Refresh Token
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IJwtService.ValidateToken(System.String)">
+            <summary>
+            التحقق من صلاحية Access Token
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IJwtService.GetUserIdFromToken(System.String)">
+            <summary>
+            استخراج User ID من Access Token
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IJwtService.GetTokenExpiration">
+            <summary>
+            الحصول على تاريخ انتهاء صلاحية الـ Token
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.IJwtService.GetRefreshTokenExpiration">
+            <summary>
+            الحصول على تاريخ انتهاء صلاحية Refresh Token
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.IResponseService">
+            <summary>
+            Response service interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.ISectionService">
+            <summary>
+            Section service interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.ISendEventService">
+            <summary>
+            Service interface for sending events to contacts
+            </summary>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.ISendEventService.SendEventToContactAsync(System.Guid,System.Guid,System.Guid)">
+            <summary>
+            إرسال دعوة لحدث إلى جهة اتصال واحدة
+            </summary>
+            <param name="eventId">معرف الحدث</param>
+            <param name="contactId">معرف جهة الاتصال</param>
+            <param name="userId">معرف المستخدم المرسل</param>
+            <returns>نجاح أو فشل الإرسال</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.ISendEventService.SendEventToContactsAsync(System.Guid,System.Collections.Generic.IEnumerable{System.Guid},System.Guid)">
+            <summary>
+            إرسال دعوة لحدث إلى عدة جهات اتصال
+            </summary>
+            <param name="eventId">معرف الحدث</param>
+            <param name="contactIds">قائمة معرفات جهات الاتصال</param>
+            <param name="userId">معرف المستخدم المرسل</param>
+            <returns>عدد الدعوات المرسلة بنجاح</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.ISendEventService.SendEventToGroupAsync(System.Guid,System.Guid,System.Guid)">
+            <summary>
+            إرسال دعوة لحدث إلى مجموعة كاملة
+            </summary>
+            <param name="eventId">معرف الحدث</param>
+            <param name="groupId">معرف المجموعة</param>
+            <param name="userId">معرف المستخدم المرسل</param>
+            <returns>عدد الدعوات المرسلة بنجاح</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.ISendEventService.SendEventReminderAsync(System.Guid,System.Collections.Generic.IEnumerable{System.Guid},System.Guid)">
+            <summary>
+            إرسال تذكير للمشاركة في حدث
+            </summary>
+            <param name="eventId">معرف الحدث</param>
+            <param name="contactIds">قائمة معرفات جهات الاتصال</param>
+            <param name="userId">معرف المستخدم المرسل</param>
+            <returns>عدد التذكيرات المرسلة بنجاح</returns>
+        </member>
+        <member name="M:EventMeena.Application.Services.Interfaces.ISendEventService.GetEventSendHistoryAsync(System.Guid,System.Guid)">
+            <summary>
+            الحصول على سجل إرسالات حدث معين
+            </summary>
+            <param name="eventId">معرف الحدث</param>
+            <param name="userId">معرف المستخدم</param>
+            <returns>قائمة سجلات الإرسال</returns>
+        </member>
+        <member name="T:EventMeena.Application.Services.Interfaces.ITemplateService">
+            <summary>
+            Template service interface
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Auth.LoginRequestValidator">
+            <summary>
+            Validator for LoginRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Auth.RegisterRequestValidator">
+            <summary>
+            Validator for RegisterRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Components.CreateComponentRequestValidator">
+            <summary>
+            Validator for CreateComponentRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Components.UpdateComponentRequestValidator">
+            <summary>
+            Validator for UpdateComponentRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Contacts.CreateContactRequestValidator">
+            <summary>
+            Validator for CreateContactRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Contacts.UpdateContactRequestValidator">
+            <summary>
+            Validator for UpdateContactRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Events.CreateEventRequestValidator">
+            <summary>
+            Validator for CreateEventRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Events.UpdateEventRequestValidator">
+            <summary>
+            Validator for UpdateEventRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Groups.CreateGroupRequestValidator">
+            <summary>
+            Validator for CreateGroupRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Groups.UpdateGroupRequestValidator">
+            <summary>
+            Validator for UpdateGroupRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Responses.StartResponseRequestValidator">
+            <summary>
+            Validator for StartResponseRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Responses.SubmitSectionAnswersRequestValidator">
+            <summary>
+            Validator for SubmitSectionAnswersRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Responses.CompleteResponseRequestValidator">
+            <summary>
+            Validator for CompleteResponseRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Sections.CreateSectionRequestValidator">
+            <summary>
+            Validator for CreateSectionRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Sections.UpdateSectionRequestValidator">
+            <summary>
+            Validator for UpdateSectionRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Templates.CreateTemplateRequestValidator">
+            <summary>
+            Validator for CreateTemplateRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Templates.UpdateTemplateRequestValidator">
+            <summary>
+            Validator for UpdateTemplateRequest
+            </summary>
+        </member>
+        <member name="T:EventMeena.Application.Validators.Templates.CreateTemplateFromEventRequestValidator">
+            <summary>
+            Validator for CreateTemplateFromEventRequest
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,22 @@
+1:"$Sreact.fragment"
+2:I[4266,["/_next/static/chunks/c14102c8d1dc0f5a.js","/_next/static/chunks/345dcc01c8352005.js"],"ViewportBoundary"]
+4:I[4266,["/_next/static/chunks/c14102c8d1dc0f5a.js","/_next/static/chunks/345dcc01c8352005.js"],"MetadataBoundary"]
+5:"$Sreact.suspense"
+7:I[16363,["/_next/static/chunks/c14102c8d1dc0f5a.js","/_next/static/chunks/345dcc01c8352005.js"],"IconMark"]
+:HL["/_next/static/chunks/35a688a2d3a3a089.css","style"]
+:HL["/_next/static/chunks/52738e5daa1f27d3.css","style"]
+:HL["/_next/static/media/1d2cc0c079997359-s.p.3e57c327.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/3c37948f7e3aafda-s.p.8458e040.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/48e6fa8a5baca31f-s.p.33d01b36.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/4b676bcffc00356a-s.p.c22aaca1.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/7ca057cce9853046-s.p.6a702554.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/9ff27b8a0a8f3dc0-s.p.9cb3a3e2.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/a11ec078145f8b0e-s.p.6f712cad.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/d41831e24743a3c1-s.p.ae65d18e.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/d54db18e8cd5f74f-s.p.0e8eb956.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/e7b64a7fde1a3d32-s.p.c2772084.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/e9f32d51db34fd0c-s.p.28c55982.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/f0e0669539caf32a-s.p.e7ea314c.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"buildId":"EZwJavb731nsL3qsZEg1e","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"dashboard","paramType":null,"paramKey":"dashboard","hasRuntimePrefetch":false,"slots":{"children":{"name":"settings","paramType":null,"paramKey":"settings","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"head":["$","$1","h",{"children":[null,["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"isHeadPartial":false,"staleTime":300}
+3:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+6:[["$","title","0",{"children":"Event Meena - منصة إنشاء الأحداث التفاعلية"}],["$","meta","1",{"name":"description","content":"أنشئ حدثك التفاعلي في دقائق - استبيانات، اختبارات، نماذج تفاعلية والمزيد!"}],["$","meta","2",{"name":"keywords","content":"استبيانات,اختبارات,نماذج,أحداث تفاعلية,Event Meena"}],["$","link","3",{"rel":"icon","href":"/favicon.ico?favicon.0b3bf435.ico","sizes":"256x256","type":"image/x-icon"}],["$","$L7","4",{}]]

@@ -1,0 +1,451 @@
+2025-11-27 10:09:37.432 +02:00 [INF] Executed DbCommand (612ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [EventMeenaDB];
+2025-11-27 10:09:37.710 +02:00 [INF] Executed DbCommand (205ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [EventMeenaDB] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-11-27 10:09:37.740 +02:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-27 10:09:37.836 +02:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2025-11-27 10:09:37.842 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-27 10:09:37.874 +02:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-27 10:09:37.911 +02:00 [INF] Executed DbCommand (29ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-27 10:09:37.947 +02:00 [INF] Applying migration '20251127080916_InitialCreate'.
+2025-11-27 10:09:38.178 +02:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] uniqueidentifier NOT NULL,
+    [FullName] nvarchar(100) NOT NULL,
+    [Email] nvarchar(256) NOT NULL,
+    [PasswordHash] nvarchar(max) NOT NULL,
+    [Phone] nvarchar(20) NULL,
+    [ProfileImage] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [LastLoginAt] datetime2 NULL,
+    [RefreshToken] nvarchar(500) NULL,
+    [RefreshTokenExpiryTime] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id])
+);
+2025-11-27 10:09:38.229 +02:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Contacts] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Email] nvarchar(256) NULL,
+    [Phone] nvarchar(20) NULL,
+    [Company] nvarchar(100) NULL,
+    [Notes] nvarchar(1000) NULL,
+    [IsActive] bit NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Contacts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Contacts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:09:38.246 +02:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Events] (
+    [Id] uniqueidentifier NOT NULL,
+    [Title] nvarchar(200) NOT NULL,
+    [Description] nvarchar(2000) NULL,
+    [Type] int NOT NULL,
+    [Status] int NOT NULL,
+    [CoverImage] nvarchar(500) NULL,
+    [ThemeColor] nvarchar(20) NULL,
+    [Language] nvarchar(10) NULL DEFAULT N'ar',
+    [StartDate] datetime2 NULL,
+    [EndDate] datetime2 NULL,
+    [TimeLimitMinutes] int NULL,
+    [ShareCode] nvarchar(20) NOT NULL,
+    [ShareLink] nvarchar(500) NULL,
+    [RequireLogin] bit NOT NULL,
+    [AllowAnonymous] bit NOT NULL,
+    [MaxResponses] int NULL,
+    [AllowMultipleResponses] bit NOT NULL,
+    [ShowResults] bit NOT NULL,
+    [ShowCorrectAnswers] bit NOT NULL,
+    [ShuffleQuestions] bit NOT NULL,
+    [ShuffleOptions] bit NOT NULL,
+    [PassingScore] int NULL,
+    [ViewCount] int NOT NULL,
+    [ResponseCount] int NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Events] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Events_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:09:38.263 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Groups] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [Color] nvarchar(20) NULL,
+    [IsActive] bit NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Groups] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Groups_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:09:38.279 +02:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [UserTemplates] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Description] nvarchar(1000) NULL,
+    [Type] int NOT NULL,
+    [ThumbnailUrl] nvarchar(500) NULL,
+    [TemplateDataJson] nvarchar(max) NOT NULL,
+    [IsPublic] bit NOT NULL,
+    [UsageCount] int NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_UserTemplates] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_UserTemplates_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:09:38.297 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Responses] (
+    [Id] uniqueidentifier NOT NULL,
+    [Status] int NOT NULL,
+    [RespondentName] nvarchar(100) NULL,
+    [RespondentEmail] nvarchar(256) NULL,
+    [RespondentPhone] nvarchar(20) NULL,
+    [RespondentIp] nvarchar(50) NULL,
+    [UserAgent] nvarchar(500) NULL,
+    [AnswersJson] nvarchar(max) NOT NULL,
+    [StartedAt] datetime2 NOT NULL,
+    [CompletedAt] datetime2 NULL,
+    [DurationSeconds] int NULL,
+    [Score] int NULL,
+    [TotalPoints] int NULL,
+    [Percentage] float NULL,
+    [IsPassed] bit NULL,
+    [CurrentSectionIndex] int NOT NULL,
+    [EventId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Responses] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Responses_Events_EventId] FOREIGN KEY ([EventId]) REFERENCES [Events] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:09:38.309 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Sections] (
+    [Id] uniqueidentifier NOT NULL,
+    [Title] nvarchar(200) NOT NULL,
+    [Description] nvarchar(1000) NULL,
+    [Order] int NOT NULL,
+    [IsVisible] bit NOT NULL,
+    [EventId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Sections] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Sections_Events_EventId] FOREIGN KEY ([EventId]) REFERENCES [Events] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:09:38.352 +02:00 [ERR] Failed executing DbCommand (34ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [SendHistories] (
+    [Id] uniqueidentifier NOT NULL,
+    [Method] int NOT NULL,
+    [Status] int NOT NULL,
+    [RecipientEmail] nvarchar(256) NULL,
+    [RecipientPhone] nvarchar(20) NULL,
+    [Subject] nvarchar(500) NULL,
+    [Message] nvarchar(max) NULL,
+    [SentAt] datetime2 NULL,
+    [DeliveredAt] datetime2 NULL,
+    [OpenedAt] datetime2 NULL,
+    [ErrorMessage] nvarchar(1000) NULL,
+    [ExternalId] nvarchar(100) NULL,
+    [EventId] uniqueidentifier NOT NULL,
+    [ContactId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_SendHistories] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_SendHistories_Contacts_ContactId] FOREIGN KEY ([ContactId]) REFERENCES [Contacts] ([Id]) ON DELETE SET NULL,
+    CONSTRAINT [FK_SendHistories_Events_EventId] FOREIGN KEY ([EventId]) REFERENCES [Events] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:10:19.819 +02:00 [INF] Executed DbCommand (18ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-27 10:10:19.912 +02:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-27 10:10:19.941 +02:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-27 10:10:41.278 +02:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-27 10:10:41.380 +02:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [EventMeenaDB] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+END;
+2025-11-27 10:10:41.441 +02:00 [INF] Executed DbCommand (56ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+DROP DATABASE [EventMeenaDB];
+2025-11-27 10:11:21.686 +02:00 [INF] Executed DbCommand (361ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [EventMeenaDB];
+2025-11-27 10:11:21.866 +02:00 [INF] Executed DbCommand (92ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [EventMeenaDB] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-11-27 10:11:21.894 +02:00 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-27 10:11:21.985 +02:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [__EFMigrationsHistory] (
+    [MigrationId] nvarchar(150) NOT NULL,
+    [ProductVersion] nvarchar(32) NOT NULL,
+    CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+);
+2025-11-27 10:11:21.991 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-11-27 10:11:22.020 +02:00 [INF] Executed DbCommand (21ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-11-27 10:11:22.041 +02:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-11-27 10:11:22.062 +02:00 [INF] Applying migration '20251127081059_InitialCreate'.
+2025-11-27 10:11:22.204 +02:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] uniqueidentifier NOT NULL,
+    [FullName] nvarchar(100) NOT NULL,
+    [Email] nvarchar(256) NOT NULL,
+    [PasswordHash] nvarchar(max) NOT NULL,
+    [Phone] nvarchar(20) NULL,
+    [ProfileImage] nvarchar(500) NULL,
+    [IsActive] bit NOT NULL,
+    [LastLoginAt] datetime2 NULL,
+    [RefreshToken] nvarchar(500) NULL,
+    [RefreshTokenExpiryTime] datetime2 NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id])
+);
+2025-11-27 10:11:22.216 +02:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Contacts] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Email] nvarchar(256) NULL,
+    [Phone] nvarchar(20) NULL,
+    [Company] nvarchar(100) NULL,
+    [Notes] nvarchar(1000) NULL,
+    [IsActive] bit NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Contacts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Contacts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:11:22.226 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Events] (
+    [Id] uniqueidentifier NOT NULL,
+    [Title] nvarchar(200) NOT NULL,
+    [Description] nvarchar(2000) NULL,
+    [Type] int NOT NULL,
+    [Status] int NOT NULL,
+    [CoverImage] nvarchar(500) NULL,
+    [ThemeColor] nvarchar(20) NULL,
+    [Language] nvarchar(10) NULL DEFAULT N'ar',
+    [StartDate] datetime2 NULL,
+    [EndDate] datetime2 NULL,
+    [TimeLimitMinutes] int NULL,
+    [ShareCode] nvarchar(20) NOT NULL,
+    [ShareLink] nvarchar(500) NULL,
+    [RequireLogin] bit NOT NULL,
+    [AllowAnonymous] bit NOT NULL,
+    [MaxResponses] int NULL,
+    [AllowMultipleResponses] bit NOT NULL,
+    [ShowResults] bit NOT NULL,
+    [ShowCorrectAnswers] bit NOT NULL,
+    [ShuffleQuestions] bit NOT NULL,
+    [ShuffleOptions] bit NOT NULL,
+    [PassingScore] int NULL,
+    [ViewCount] int NOT NULL,
+    [ResponseCount] int NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Events] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Events_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:11:22.237 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Groups] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(100) NOT NULL,
+    [Description] nvarchar(500) NULL,
+    [Color] nvarchar(20) NULL,
+    [IsActive] bit NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Groups] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Groups_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:11:22.244 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [UserTemplates] (
+    [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(200) NOT NULL,
+    [Description] nvarchar(1000) NULL,
+    [Type] int NOT NULL,
+    [ThumbnailUrl] nvarchar(500) NULL,
+    [TemplateDataJson] nvarchar(max) NOT NULL,
+    [IsPublic] bit NOT NULL,
+    [UsageCount] int NOT NULL,
+    [UserId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_UserTemplates] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_UserTemplates_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:11:22.253 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Responses] (
+    [Id] uniqueidentifier NOT NULL,
+    [Status] int NOT NULL,
+    [RespondentName] nvarchar(100) NULL,
+    [RespondentEmail] nvarchar(256) NULL,
+    [RespondentPhone] nvarchar(20) NULL,
+    [RespondentIp] nvarchar(50) NULL,
+    [UserAgent] nvarchar(500) NULL,
+    [AnswersJson] nvarchar(max) NOT NULL,
+    [StartedAt] datetime2 NOT NULL,
+    [CompletedAt] datetime2 NULL,
+    [DurationSeconds] int NULL,
+    [Score] int NULL,
+    [TotalPoints] int NULL,
+    [Percentage] float NULL,
+    [IsPassed] bit NULL,
+    [CurrentSectionIndex] int NOT NULL,
+    [EventId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Responses] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Responses_Events_EventId] FOREIGN KEY ([EventId]) REFERENCES [Events] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:11:22.260 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Sections] (
+    [Id] uniqueidentifier NOT NULL,
+    [Title] nvarchar(200) NOT NULL,
+    [Description] nvarchar(1000) NULL,
+    [Order] int NOT NULL,
+    [IsVisible] bit NOT NULL,
+    [EventId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Sections] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Sections_Events_EventId] FOREIGN KEY ([EventId]) REFERENCES [Events] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:11:22.269 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [SendHistories] (
+    [Id] uniqueidentifier NOT NULL,
+    [Method] int NOT NULL,
+    [Status] int NOT NULL,
+    [RecipientEmail] nvarchar(256) NULL,
+    [RecipientPhone] nvarchar(20) NULL,
+    [Subject] nvarchar(500) NULL,
+    [Message] nvarchar(max) NULL,
+    [SentAt] datetime2 NULL,
+    [DeliveredAt] datetime2 NULL,
+    [OpenedAt] datetime2 NULL,
+    [ErrorMessage] nvarchar(1000) NULL,
+    [ExternalId] nvarchar(100) NULL,
+    [EventId] uniqueidentifier NOT NULL,
+    [ContactId] uniqueidentifier NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_SendHistories] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_SendHistories_Contacts_ContactId] FOREIGN KEY ([ContactId]) REFERENCES [Contacts] ([Id]),
+    CONSTRAINT [FK_SendHistories_Events_EventId] FOREIGN KEY ([EventId]) REFERENCES [Events] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:11:22.278 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [ContactGroups] (
+    [ContactId] uniqueidentifier NOT NULL,
+    [GroupId] uniqueidentifier NOT NULL,
+    [AddedAt] datetime2 NOT NULL,
+    CONSTRAINT [PK_ContactGroups] PRIMARY KEY ([ContactId], [GroupId]),
+    CONSTRAINT [FK_ContactGroups_Contacts_ContactId] FOREIGN KEY ([ContactId]) REFERENCES [Contacts] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_ContactGroups_Groups_GroupId] FOREIGN KEY ([GroupId]) REFERENCES [Groups] ([Id])
+);
+2025-11-27 10:11:22.288 +02:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Components] (
+    [Id] uniqueidentifier NOT NULL,
+    [Type] int NOT NULL,
+    [Order] int NOT NULL,
+    [Title] nvarchar(500) NULL,
+    [Description] nvarchar(2000) NULL,
+    [Placeholder] nvarchar(200) NULL,
+    [IsRequired] bit NOT NULL,
+    [IsVisible] bit NOT NULL,
+    [OptionsJson] nvarchar(max) NULL,
+    [ValidationJson] nvarchar(max) NULL,
+    [CorrectAnswerJson] nvarchar(max) NULL,
+    [Points] int NULL,
+    [Explanation] nvarchar(2000) NULL,
+    [MinValue] int NULL,
+    [MaxValue] int NULL,
+    [MinLabel] nvarchar(100) NULL,
+    [MaxLabel] nvarchar(100) NULL,
+    [MediaUrl] nvarchar(500) NULL,
+    [MediaType] nvarchar(50) NULL,
+    [StyleJson] nvarchar(max) NULL,
+    [SectionId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    CONSTRAINT [PK_Components] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Components_Sections_SectionId] FOREIGN KEY ([SectionId]) REFERENCES [Sections] ([Id]) ON DELETE CASCADE
+);
+2025-11-27 10:11:22.306 +02:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Components_SectionId] ON [Components] ([SectionId]);
+2025-11-27 10:11:22.311 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ContactGroups_ContactId] ON [ContactGroups] ([ContactId]);
+2025-11-27 10:11:22.316 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_ContactGroups_GroupId] ON [ContactGroups] ([GroupId]);
+2025-11-27 10:11:22.321 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Contacts_Email] ON [Contacts] ([Email]);
+2025-11-27 10:11:22.327 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Contacts_UserId] ON [Contacts] ([UserId]);
+2025-11-27 10:11:22.334 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Events_ShareCode] ON [Events] ([ShareCode]);
+2025-11-27 10:11:22.341 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Events_Status] ON [Events] ([Status]);
+2025-11-27 10:11:22.349 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Events_Type] ON [Events] ([Type]);
+2025-11-27 10:11:22.355 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Events_UserId] ON [Events] ([UserId]);
+2025-11-27 10:11:22.360 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Groups_UserId] ON [Groups] ([UserId]);
+2025-11-27 10:11:22.367 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Responses_EventId] ON [Responses] ([EventId]);
+2025-11-27 10:11:22.373 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Responses_RespondentEmail] ON [Responses] ([RespondentEmail]);
+2025-11-27 10:11:22.379 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Responses_Status] ON [Responses] ([Status]);
+2025-11-27 10:11:22.387 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Sections_EventId] ON [Sections] ([EventId]);
+2025-11-27 10:11:22.393 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SendHistories_ContactId] ON [SendHistories] ([ContactId]);
+2025-11-27 10:11:22.401 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SendHistories_EventId] ON [SendHistories] ([EventId]);
+2025-11-27 10:11:22.406 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SendHistories_Method] ON [SendHistories] ([Method]);
+2025-11-27 10:11:22.411 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_SendHistories_Status] ON [SendHistories] ([Status]);
+2025-11-27 10:11:22.427 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX [IX_Users_Email] ON [Users] ([Email]);
+2025-11-27 10:11:22.434 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_UserTemplates_IsPublic] ON [UserTemplates] ([IsPublic]);
+2025-11-27 10:11:22.440 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_UserTemplates_Type] ON [UserTemplates] ([Type]);
+2025-11-27 10:11:22.447 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_UserTemplates_UserId] ON [UserTemplates] ([UserId]);
+2025-11-27 10:11:22.469 +02:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251127081059_InitialCreate', N'8.0.10');

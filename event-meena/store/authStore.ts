@@ -1,0 +1,180 @@
+/**
+ * Zustand Store لإدارة حالة المصادقة
+ * مربوط بـ Backend API
+ */
+
+import { create } from "zustand";
+import { AuthState, LoginData, SignupData, UpdateProfileData } from "@/types/auth";
+import { authService } from "@/lib/api/services/authService";
+import { tokenManager } from "@/lib/api/client";
+import { ApiError } from "@/lib/api/client";
+
+// إنشاء Store
+export const useAuthStore = create<AuthState>((set) => ({
+  // الحالة الأولية
+  user: null,
+  token: null,
+  isAuthenticated: false,
+  isLoading: false,
+  error: null,
+
+  // تسجيل الدخول - متصل بـ Backend API
+  login: async (data: LoginData) => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const result = await authService.login(data);
+
+      set({
+        user: result.user,
+        token: result.token,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      });
+    } catch (error) {
+      // استخراج رسالة الخطأ
+      const errorMessage =
+        error instanceof ApiError
+          ? error.message
+          : error instanceof Error
+            ? error.message
+            : "حدث خطأ أثناء تسجيل الدخول";
+
+      set({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: errorMessage,
+      });
+      throw error;
+    }
+  },
+
+  // إنشاء حساب جديد - متصل بـ Backend API
+  signup: async (data: SignupData) => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const result = await authService.register(data);
+
+      set({
+        user: result.user,
+        token: result.token,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      });
+    } catch (error) {
+      // استخراج رسالة الخطأ
+      const errorMessage =
+        error instanceof ApiError
+          ? error.message
+          : error instanceof Error
+            ? error.message
+            : "حدث خطأ أثناء إنشاء الحساب";
+
+      set({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: errorMessage,
+      });
+      throw error;
+    }
+  },
+
+  // تسجيل الخروج - متصل بـ Backend API
+  logout: async () => {
+    set({ isLoading: true });
+
+    try {
+      await authService.logout();
+    } finally {
+      // مسح الحالة في جميع الحالات (حتى لو فشل الطلب)
+      set({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      });
+    }
+  },
+
+  // التحقق من الجلسة الحالية - متصل بـ Backend API
+  checkAuth: async () => {
+    // التحقق من وجود توكن محفوظ
+    if (!tokenManager.hasValidToken()) {
+      set({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      });
+      return;
+    }
+
+    set({ isLoading: true });
+
+    try {
+      // جلب بيانات المستخدم من الـ API
+      const user = await authService.getCurrentUser();
+      const token = tokenManager.getAccessToken();
+
+      set({
+        user,
+        token,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      });
+    } catch {
+      // فشل التحقق - مسح التوكن والحالة
+      tokenManager.clearTokens();
+      set({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: null,
+      });
+    }
+  },
+
+  // تحديث الملف الشخصي - متصل بـ Backend API
+  updateProfile: async (data: UpdateProfileData) => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const updatedUser = await authService.updateProfile(data);
+
+      set({
+        user: updatedUser,
+        isLoading: false,
+        error: null,
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof ApiError
+          ? error.message
+          : error instanceof Error
+            ? error.message
+            : "حدث خطأ أثناء تحديث الملف الشخصي";
+
+      set({
+        isLoading: false,
+        error: errorMessage,
+      });
+      throw error;
+    }
+  },
+
+  // مسح الأخطاء
+  clearError: () => {
+    set({ error: null });
+  },
+}));

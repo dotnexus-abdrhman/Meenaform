@@ -1,0 +1,11 @@
+{
+  "[project]/event-meena/components/pdf/canvas-editor/EnhancedHTMLEditor.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/event-meena/components/pdf/canvas-editor/EnhancedHTMLEditor.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/event-meena_components_pdf_canvas-editor_c53c6932._.js",
+      "static/chunks/fe339_58c04836._.js",
+      "static/chunks/event-meena_8a21767d._.css",
+      "static/chunks/event-meena_components_pdf_canvas-editor_EnhancedHTMLEditor_tsx_f9bcf18f._.js"
+    ]
+  }
+}

@@ -1,0 +1,119 @@
+"use client";
+
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import { useEventsStore } from "@/store/eventsStore";
+import { useEventBuilderStore } from "@/store/eventBuilderStore";
+import EventBuilderWizard from "@/components/events/create/EventBuilderWizard";
+import LoadingState from "@/components/dashboard/LoadingState";
+
+function EditEventPageContent() {
+  const params = useParams();
+  const router = useRouter();
+  const eventId = params.id as string;
+
+  const { currentEvent, fetchEventById, updateEvent, isLoading } = useEventsStore();
+  const { reset: resetBuilder, setTitle, setDescription, setType, setNumberOfSections, initializeSections, setStartDate, setEndDate, setRequireAuth, setAllowEdit, setShowResults, setAllowMultipleResponses, setRequireSignature } = useEventBuilderStore();
+
+  useEffect(() => {
+    if (eventId) {
+      fetchEventById(eventId);
+    }
+  }, [eventId, fetchEventById]);
+
+  // Load event data into builder when event is fetched
+  useEffect(() => {
+    if (currentEvent && !isLoading) {
+      // Reset builder first
+      resetBuilder();
+
+      // Set basic info
+      setTitle(currentEvent.title);
+      setDescription(currentEvent.description);
+      setType(currentEvent.type);
+      setNumberOfSections(currentEvent.sections?.length || 1);
+
+      // Set settings
+      if (currentEvent.startDate) setStartDate(currentEvent.startDate);
+      if (currentEvent.endDate) setEndDate(currentEvent.endDate);
+      setRequireAuth(currentEvent.settings?.requireLogin || false);
+      setAllowEdit(currentEvent.settings?.allowEdit || false);
+      setShowResults(currentEvent.settings?.showResultsToParticipants || false);
+      setAllowMultipleResponses(currentEvent.settings?.allowMultipleResponses || false);
+      setRequireSignature(currentEvent.settings?.requireSignature || false);
+
+      // Initialize sections with existing data
+      initializeSections();
+
+      // Load sections and components
+      if (currentEvent.sections && currentEvent.sections.length > 0) {
+        const builderStore = useEventBuilderStore.getState();
+        builderStore.sections = currentEvent.sections.map(section => ({
+          ...section,
+          components: section.components || []
+        }));
+      }
+    }
+  }, [currentEvent, isLoading, resetBuilder, setTitle, setDescription, setType, setNumberOfSections, setStartDate, setEndDate, setRequireAuth, setAllowEdit, setShowResults, setAllowMultipleResponses, setRequireSignature, initializeSections]);
+
+  const handleComplete = async () => {
+    try {
+      const builderStore = useEventBuilderStore.getState();
+
+      // Don't use buildEvent() for updates as it generates a new ID
+      // Instead, construct the update data manually
+      const updateData = {
+        title: builderStore.title,
+        description: builderStore.description,
+        type: builderStore.type,
+        sections: builderStore.sections.map((s) => ({ ...s, eventId })),
+        settings: {
+          requireAuth: builderStore.requireAuth,
+          allowEdit: builderStore.allowEdit,
+          showResults: builderStore.showResults,
+          allowMultipleResponses: builderStore.allowMultipleResponses,
+          requireSignature: builderStore.requireSignature,
+          shuffleQuestions: false,
+          showProgressBar: true,
+          allowAnonymous: !builderStore.requireAuth,
+        },
+        startDate: builderStore.startDate,
+        endDate: builderStore.endDate,
+        updatedAt: new Date().toISOString(),
+      };
+
+      await updateEvent(eventId, updateData);
+      router.push(`/dashboard/events/${eventId}`);
+    } catch (error) {
+      console.error("Error updating event:", error);
+    }
+  };
+
+  if (isLoading || !currentEvent) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <LoadingState message="جاري تحميل الحدث..." />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <EventBuilderWizard
+        mode="edit"
+        eventId={eventId}
+        onComplete={handleComplete}
+      />
+    </div>
+  );
+}
+
+export default function EditEventPage() {
+  return (
+    <ProtectedRoute>
+      <EditEventPageContent />
+    </ProtectedRoute>
+  );
+}
+
