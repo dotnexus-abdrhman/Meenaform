@@ -211,7 +211,6 @@ export default function EventForm({ event, onSubmit, isLoading }: EventFormProps
               <SelectItem value="draft">مسودة</SelectItem>
               <SelectItem value="active">نشط</SelectItem>
               <SelectItem value="closed">منتهي</SelectItem>
-              <SelectItem value="archived">مؤرشف</SelectItem>
             </SelectContent>
           </Select>
           {errors.status && (

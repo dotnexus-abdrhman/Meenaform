@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useEventBuilderStore } from "@/store/eventBuilderStore";
+import { useContactsStore } from "@/store/contactsStore";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,20 +22,44 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
   Calendar,
   Lock,
   Edit,
   Eye,
   RefreshCw,
-  PenTool,
   Settings as SettingsIcon,
   MessageSquare,
   Trophy,
   AlertTriangle,
+  Shield,
+  Mail,
+  X,
+  Plus,
+  Users,
+  UserPlus,
+  Search,
+  Phone,
 } from "lucide-react";
+import { Contact, Group } from "@/types/contact";
 
 export default function Step4EventSettings() {
   const [showAuthWarning, setShowAuthWarning] = useState(false);
+  const [showPrivateDialog, setShowPrivateDialog] = useState(false);
+  const [showContactsDialog, setShowContactsDialog] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedContactIds, setSelectedContactIds] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<"contacts" | "groups">("contacts");
+  const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([]);
+
   const {
     type,
     startDate,
@@ -40,7 +68,8 @@ export default function Step4EventSettings() {
     allowEdit,
     showResults,
     allowMultipleResponses,
-    requireSignature,
+    isPrivate,
+    allowedEmails,
     thankYouMessage,
     successMessage,
     goodMessage,
@@ -51,12 +80,134 @@ export default function Step4EventSettings() {
     setAllowEdit,
     setShowResults,
     setAllowMultipleResponses,
-    setRequireSignature,
+    setIsPrivate,
+    setAllowedEmails,
+    addAllowedEmail,
+    removeAllowedEmail,
     setThankYouMessage,
     setSuccessMessage,
     setGoodMessage,
     setImprovementMessage,
   } = useEventBuilderStore();
+
+  const { contacts, groups, fetchContacts, fetchGroups } = useContactsStore();
+
+  // Fetch contacts on mount
+  useEffect(() => {
+    fetchContacts();
+    fetchGroups();
+  }, [fetchContacts, fetchGroups]);
+
+  // Email validation
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Add email handler
+  const handleAddEmail = () => {
+    const trimmedEmail = emailInput.trim().toLowerCase();
+    if (!trimmedEmail) return;
+
+    if (!validateEmail(trimmedEmail)) {
+      setEmailError("يرجى إدخال بريد إلكتروني صحيح");
+      return;
+    }
+
+    if (allowedEmails.includes(trimmedEmail)) {
+      setEmailError("هذا البريد مضاف مسبقاً");
+      return;
+    }
+
+    addAllowedEmail(trimmedEmail);
+    setEmailInput("");
+    setEmailError("");
+  };
+
+  // Handle key press (Enter to add)
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddEmail();
+    }
+  };
+
+  // Filter contacts/groups based on search
+  const filteredContacts = contacts.filter(
+    (contact) =>
+      contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      contact.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredGroups = groups.filter(
+    (group) =>
+      group.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Toggle contact selection
+  const toggleContactSelection = (contact: Contact) => {
+    const isSelected = selectedContactIds.includes(contact.id);
+    if (isSelected) {
+      setSelectedContactIds(prev => prev.filter(id => id !== contact.id));
+    } else {
+      setSelectedContactIds(prev => [...prev, contact.id]);
+    }
+  };
+
+  // Toggle group selection
+  const toggleGroupSelection = (group: Group) => {
+    const isSelected = selectedGroupIds.includes(group.id);
+    if (isSelected) {
+      setSelectedGroupIds(prev => prev.filter(id => id !== group.id));
+    } else {
+      setSelectedGroupIds(prev => [...prev, group.id]);
+    }
+  };
+
+  // Add selected contacts/groups to allowed emails
+  const handleAddFromContacts = () => {
+    // Add selected contacts' emails
+    selectedContactIds.forEach(contactId => {
+      const contact = contacts.find(c => c.id === contactId);
+      if (contact && contact.email && !allowedEmails.includes(contact.email.toLowerCase())) {
+        addAllowedEmail(contact.email.toLowerCase());
+      }
+    });
+
+    // Add selected groups' members' emails
+    selectedGroupIds.forEach(groupId => {
+      const group = groups.find(g => g.id === groupId);
+      if (group) {
+        group.contactIds.forEach(contactId => {
+          const contact = contacts.find(c => c.id === contactId);
+          if (contact && contact.email && !allowedEmails.includes(contact.email.toLowerCase())) {
+            addAllowedEmail(contact.email.toLowerCase());
+          }
+        });
+      }
+    });
+
+    setShowContactsDialog(false);
+    setSelectedContactIds([]);
+    setSelectedGroupIds([]);
+    setSearchQuery("");
+  };
+
+  // Handle private toggle
+  const handlePrivateToggle = (value: boolean) => {
+    if (value && !requireAuth) {
+      // Show dialog explaining that requireAuth will be enabled
+      setShowPrivateDialog(true);
+    } else {
+      setIsPrivate(value);
+    }
+  };
+
+  // Confirm enabling private event
+  const confirmEnablePrivate = () => {
+    setIsPrivate(true); // This will also set requireAuth to true in the store
+    setShowPrivateDialog(false);
+  };
 
   return (
     <div className="space-y-8">
@@ -239,26 +390,130 @@ export default function Step4EventSettings() {
             </div>
           )}
 
-          {/* Require Signature */}
-          <div className="flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:border-primary/30 transition-colors">
-            <div className="flex items-start gap-3">
-              <PenTool className="w-5 h-5 text-gray-600 mt-0.5" />
-              <div>
-                <Label htmlFor="requireSignature" className="text-base font-semibold cursor-pointer">
-                  طلب توقيع مع الرد
-                </Label>
-                <p className="text-sm text-gray-600 mt-1">
-                  المشاركون يجب أن يوقعوا إلكترونياً قبل الإرسال
-                </p>
-              </div>
-            </div>
-            <Checkbox
-              id="requireSignature"
-              checked={requireSignature}
-              onCheckedChange={(checked) => setRequireSignature(checked === true)}
-            />
-          </div>
         </div>
+      </Card>
+
+      {/* Private Event Settings */}
+      <Card className={`p-6 transition-all ${isPrivate ? 'border-2 border-purple-300 bg-gradient-to-br from-purple-50 to-indigo-50' : ''}`}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className={`p-2 rounded-lg ${isPrivate ? 'bg-purple-100' : 'bg-purple-50'}`}>
+            <Shield className={`w-5 h-5 ${isPrivate ? 'text-purple-700' : 'text-purple-600'}`} />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-bold text-gray-900">الحدث الخاص</h3>
+            <p className="text-sm text-gray-600">
+              اجعل الحدث متاحاً فقط لأشخاص محددين
+            </p>
+          </div>
+          <Checkbox
+            id="isPrivate"
+            checked={isPrivate}
+            onCheckedChange={(checked) => handlePrivateToggle(checked === true)}
+          />
+        </div>
+
+        {/* Private Event Content */}
+        {isPrivate && (
+          <div className="space-y-4 pt-4 border-t border-purple-200">
+            {/* Email Input */}
+            <div className="space-y-2">
+              <Label className="text-base font-semibold">
+                إضافة بريد إلكتروني
+              </Label>
+              <div className="flex gap-2">
+                <div className="flex-1 relative">
+                  <Mail className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Input
+                    type="email"
+                    placeholder="أدخل البريد الإلكتروني..."
+                    value={emailInput}
+                    onChange={(e) => {
+                      setEmailInput(e.target.value);
+                      setEmailError("");
+                    }}
+                    onKeyPress={handleKeyPress}
+                    className={`pr-10 ${emailError ? 'border-red-500' : ''}`}
+                  />
+                </div>
+                <Button
+                  type="button"
+                  onClick={handleAddEmail}
+                  variant="outline"
+                  className="gap-1"
+                >
+                  <Plus className="w-4 h-4" />
+                  إضافة
+                </Button>
+              </div>
+              {emailError && (
+                <p className="text-sm text-red-500">{emailError}</p>
+              )}
+            </div>
+
+            {/* Select from Contacts Button */}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowContactsDialog(true)}
+              className="w-full gap-2 border-dashed border-purple-300 text-purple-700 hover:bg-purple-50"
+            >
+              <Users className="w-4 h-4" />
+              اختر من جهات الاتصال
+            </Button>
+
+            {/* Allowed Emails List */}
+            {allowedEmails.length > 0 && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-semibold">
+                    المشاركون المسموح لهم ({allowedEmails.length})
+                  </Label>
+                  {allowedEmails.length > 0 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setAllowedEmails([])}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                      مسح الكل
+                    </Button>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2 p-3 bg-white rounded-lg border border-purple-200 max-h-40 overflow-y-auto">
+                  {allowedEmails.map((email) => (
+                    <Badge
+                      key={email}
+                      variant="secondary"
+                      className="gap-1 py-1.5 px-3 bg-purple-100 text-purple-800 hover:bg-purple-200"
+                    >
+                      <Mail className="w-3 h-3" />
+                      {email}
+                      <button
+                        type="button"
+                        onClick={() => removeAllowedEmail(email)}
+                        className="mr-1 hover:text-red-600"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Info Box */}
+            <div className="bg-purple-100/50 border border-purple-200 rounded-lg p-3">
+              <p className="text-sm text-purple-800 flex items-start gap-2">
+                <span className="text-purple-600 mt-0.5">ℹ️</span>
+                <span>
+                  فقط الأشخاص في هذه القائمة سيتمكنون من الوصول للحدث.
+                  سيُطلب منهم إدخال بريدهم الإلكتروني للتحقق.
+                </span>
+              </p>
+            </div>
+          </div>
+        )}
       </Card>
 
       {/* Thank You Message */}
@@ -438,6 +693,7 @@ export default function Step4EventSettings() {
             <AlertDialogAction
               onClick={() => {
                 setRequireAuth(false);
+                setIsPrivate(false); // Also disable private event
                 setShowAuthWarning(false);
               }}
               className="bg-red-600 hover:bg-red-700 text-white"
@@ -447,6 +703,272 @@ export default function Step4EventSettings() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Private Event Confirmation Dialog */}
+      <AlertDialog open={showPrivateDialog} onOpenChange={setShowPrivateDialog}>
+        <AlertDialogContent className="max-w-lg bg-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2 text-purple-600 text-xl">
+              <Shield className="w-6 h-6" />
+              تفعيل الحدث الخاص
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-4 text-base text-gray-700" asChild>
+              <div>
+                <p className="font-semibold text-gray-900">
+                  لتفعيل الحدث الخاص:
+                </p>
+                <ul className="list-disc pr-6 space-y-2 text-gray-700">
+                  <li>سيتم تفعيل <span className="font-semibold text-gray-900">"يتطلب تسجيل دخول"</span> تلقائياً</li>
+                  <li>فقط الأشخاص في قائمة المسموح لهم سيتمكنون من الدخول</li>
+                  <li>سيُطلب من المشاركين إدخال بريدهم للتحقق</li>
+                </ul>
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <p className="font-semibold text-purple-700 flex items-center gap-2">
+                    <Shield className="w-4 h-4" />
+                    ملاحظة
+                  </p>
+                  <p className="text-sm text-purple-800 mt-1">
+                    يمكنك إضافة المشاركين المسموح لهم يدوياً أو اختيارهم من جهات الاتصال.
+                  </p>
+                </div>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-gray-100 hover:bg-gray-200 text-gray-900">
+              إلغاء
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmEnablePrivate}
+              className="bg-purple-600 hover:bg-purple-700 text-white"
+            >
+              تفعيل الحدث الخاص
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Contacts Selection Dialog */}
+      <Dialog open={showContactsDialog} onOpenChange={setShowContactsDialog}>
+        <DialogContent className="max-w-2xl max-h-[80vh] !flex !flex-col overflow-hidden">
+          <DialogHeader className="flex-shrink-0">
+            <DialogTitle className="text-2xl">اختر من جهات الاتصال</DialogTitle>
+            <p className="text-sm text-gray-600 mt-2">
+              اختر جهات الاتصال أو المجموعات لإضافتهم للمشاركين المسموح لهم
+            </p>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto space-y-4 min-h-0">
+            {/* Tabs */}
+            <div className="flex gap-2 p-1 bg-gray-100 rounded-lg">
+              <button
+                onClick={() => setActiveTab("contacts")}
+                className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                  activeTab === "contacts"
+                    ? "bg-white text-primary shadow-sm"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                <UserPlus className="w-4 h-4" />
+                جهات الاتصال
+                {selectedContactIds.length > 0 && (
+                  <span className="bg-primary text-white text-xs px-1.5 py-0.5 rounded-full">
+                    {selectedContactIds.length}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setActiveTab("groups")}
+                className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                  activeTab === "groups"
+                    ? "bg-white text-primary shadow-sm"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                <Users className="w-4 h-4" />
+                المجموعات
+                {selectedGroupIds.length > 0 && (
+                  <span className="bg-purple-600 text-white text-xs px-1.5 py-0.5 rounded-full">
+                    {selectedGroupIds.length}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Input
+                placeholder={`ابحث عن ${activeTab === "contacts" ? "جهة اتصال" : "مجموعة"}...`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pr-10"
+              />
+            </div>
+
+            {/* List */}
+            <ScrollArea className="h-[300px] border rounded-lg">
+              <div className="p-4 space-y-2">
+                {activeTab === "contacts" ? (
+                  filteredContacts.length > 0 ? (
+                    filteredContacts.map((contact) => (
+                      <ContactItem
+                        key={contact.id}
+                        contact={contact}
+                        selected={selectedContactIds.includes(contact.id)}
+                        onToggle={() => toggleContactSelection(contact)}
+                      />
+                    ))
+                  ) : (
+                    <EmptyState message="لا توجد جهات اتصال" />
+                  )
+                ) : (
+                  filteredGroups.length > 0 ? (
+                    filteredGroups.map((group) => (
+                      <GroupItem
+                        key={group.id}
+                        group={group}
+                        selected={selectedGroupIds.includes(group.id)}
+                        onToggle={() => toggleGroupSelection(group)}
+                      />
+                    ))
+                  ) : (
+                    <EmptyState message="لا توجد مجموعات" />
+                  )
+                )}
+              </div>
+            </ScrollArea>
+
+            {/* Summary */}
+            {(selectedContactIds.length > 0 || selectedGroupIds.length > 0) && (
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                    <Users className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-purple-900">
+                      تم اختيار {selectedContactIds.length + selectedGroupIds.length} عنصر
+                    </p>
+                    <p className="text-sm text-purple-700">
+                      {selectedContactIds.length > 0 && `${selectedContactIds.length} جهة اتصال`}
+                      {selectedContactIds.length > 0 && selectedGroupIds.length > 0 && " • "}
+                      {selectedGroupIds.length > 0 && `${selectedGroupIds.length} مجموعة`}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter className="flex-shrink-0 border-t pt-4">
+            <Button variant="outline" onClick={() => {
+              setShowContactsDialog(false);
+              setSelectedContactIds([]);
+              setSelectedGroupIds([]);
+              setSearchQuery("");
+            }}>
+              إلغاء
+            </Button>
+            {(selectedContactIds.length > 0 || selectedGroupIds.length > 0) && (
+              <Button onClick={handleAddFromContacts} className="bg-purple-600 hover:bg-purple-700">
+                <Plus className="w-4 h-4 ml-2" />
+                إضافة للقائمة
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+// Contact Item Component
+function ContactItem({
+  contact,
+  selected,
+  onToggle,
+}: {
+  contact: Contact;
+  selected: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div
+      className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all hover:bg-gray-50 ${
+        selected ? "border-purple-500 bg-purple-50" : "border-gray-200"
+      }`}
+      onClick={onToggle}
+    >
+      <Checkbox
+        checked={selected}
+        onCheckedChange={onToggle}
+        onClick={(e) => e.stopPropagation()}
+      />
+      <div className="flex-1">
+        <p className="font-semibold text-gray-900">{contact.name}</p>
+        <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
+          <span className="flex items-center gap-1">
+            <Mail className="w-3 h-3" />
+            {contact.email}
+          </span>
+          {contact.phone && (
+            <span className="flex items-center gap-1">
+              <Phone className="w-3 h-3" />
+              {contact.phone}
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Group Item Component
+function GroupItem({
+  group,
+  selected,
+  onToggle,
+}: {
+  group: Group;
+  selected: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div
+      className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all hover:bg-gray-50 ${
+        selected ? "border-purple-500 bg-purple-50" : "border-gray-200"
+      }`}
+      onClick={onToggle}
+    >
+      <Checkbox
+        checked={selected}
+        onCheckedChange={onToggle}
+        onClick={(e) => e.stopPropagation()}
+      />
+      <div
+        className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold"
+        style={{ backgroundColor: group.color }}
+      >
+        {group.name.charAt(0)}
+      </div>
+      <div className="flex-1">
+        <p className="font-semibold text-gray-900">{group.name}</p>
+        <p className="text-sm text-gray-600">
+          {group.contactIds.length} عضو
+          {group.description && ` • ${group.description}`}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Empty State Component
+function EmptyState({ message }: { message: string }) {
+  return (
+    <div className="text-center py-12">
+      <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+      <p className="text-gray-500">{message}</p>
     </div>
   );
 }

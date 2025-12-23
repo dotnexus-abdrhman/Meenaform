@@ -123,7 +123,7 @@ export default function QuestionComponent({
           <RadioGroup
             value={value || ""}
             onValueChange={onChange}
-            className="space-y-3"
+            className="space-y-2 sm:space-y-3"
           >
             {singleChoices.map((choice: any, idx: number) => {
               const choiceLabel = typeof choice === 'string' ? choice : choice.label;
@@ -133,7 +133,7 @@ export default function QuestionComponent({
                 <div
                   key={idx}
                   className={`
-                    flex items-center justify-between p-5 rounded-xl
+                    flex items-center justify-between p-3 sm:p-5 rounded-lg sm:rounded-xl
                     border-2 transition-all duration-200 cursor-pointer group
                     ${isSelected
                       ? isQuiz
@@ -146,7 +146,7 @@ export default function QuestionComponent({
                   <Label
                     htmlFor={`${component.id}-${idx}`}
                     className={`
-                      flex-1 cursor-pointer text-base font-medium leading-relaxed ml-4
+                      flex-1 cursor-pointer text-sm sm:text-base font-medium leading-relaxed ml-2 sm:ml-4
                       ${isSelected ? 'text-gray-900' : 'text-gray-700 group-hover:text-gray-900'}
                     `}
                   >
@@ -169,7 +169,7 @@ export default function QuestionComponent({
         const multipleChoices = settings.choices || settings.options?.map((opt: string) => ({ label: opt, value: opt })) || [];
         const isQuizMultiple = eventType === "quiz";
         return (
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {multipleChoices.map((choice: any, idx: number) => {
               const choiceLabel = typeof choice === 'string' ? choice : choice.label;
               const choiceValue = typeof choice === 'string' ? choice : (choice.value || choice.label);
@@ -178,7 +178,7 @@ export default function QuestionComponent({
                 <div
                   key={idx}
                   className={`
-                    flex items-center justify-between p-5 rounded-xl
+                    flex items-center justify-between p-3 sm:p-5 rounded-lg sm:rounded-xl
                     border-2 transition-all duration-200 cursor-pointer group
                     ${isChecked
                       ? isQuizMultiple
@@ -191,7 +191,7 @@ export default function QuestionComponent({
                   <Label
                     htmlFor={`${component.id}-${idx}`}
                     className={`
-                      flex-1 cursor-pointer text-base font-medium leading-relaxed ml-4
+                      flex-1 cursor-pointer text-sm sm:text-base font-medium leading-relaxed ml-2 sm:ml-4
                       ${isChecked ? 'text-gray-900' : 'text-gray-700 group-hover:text-gray-900'}
                     `}
                   >
@@ -423,11 +423,11 @@ export default function QuestionComponent({
   const isQuizType = eventType === "quiz";
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-3 sm:space-y-5">
       {/* Question Label */}
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-2 sm:gap-4">
         <span className={`
-          flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-base shadow-sm
+          flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center font-bold text-sm sm:text-base shadow-sm
           ${isQuizType
             ? 'bg-gradient-to-br from-[#1a56db] to-[#0ea5e9] text-white'
             : 'bg-primary/10 text-primary'
@@ -437,14 +437,14 @@ export default function QuestionComponent({
         </span>
         <div className="flex-1">
           <Label className={`
-            text-xl md:text-2xl font-bold leading-relaxed block
+            text-lg sm:text-xl md:text-2xl font-bold leading-relaxed block
             ${isQuizType ? 'text-gray-900' : 'text-gray-900'}
           `}>
             {settings.label || settings.question || "سؤال"}
             {settings.required && <span className="text-red-500 mr-2">*</span>}
           </Label>
           {settings.description && (
-            <p className="text-gray-600 mt-3 text-base md:text-lg leading-relaxed">
+            <p className="text-gray-600 mt-2 sm:mt-3 text-sm sm:text-base md:text-lg leading-relaxed">
               {settings.description}
             </p>
           )}
@@ -452,12 +452,12 @@ export default function QuestionComponent({
       </div>
 
       {/* Input */}
-      <div className="pr-14">{renderInput()}</div>
+      <div className="pr-10 sm:pr-14">{renderInput()}</div>
 
       {/* Auto-grading indicator for quizzes */}
       {eventType === "quiz" && settings.enableAutoGrading && (
-        <div className="pr-11 flex items-center gap-2 text-sm text-blue-600">
-          <AlertCircle className="w-4 h-4" />
+        <div className="pr-10 sm:pr-11 flex items-center gap-2 text-xs sm:text-sm text-blue-600">
+          <AlertCircle className="w-3 h-3 sm:w-4 sm:h-4" />
           <span>هذا السؤال يتم تصحيحه تلقائياً ({settings.points || 0} نقطة)</span>
         </div>
       )}
@@ -465,7 +465,7 @@ export default function QuestionComponent({
       {/* Character/Word count for text inputs */}
       {(questionType === "short_text" || questionType === "long_text") &&
         settings.maxLength && (
-          <div className="pr-11 text-sm text-gray-500 text-left">
+          <div className="pr-10 sm:pr-11 text-xs sm:text-sm text-gray-500 text-left">
             {(value || "").length} / {settings.maxLength}
           </div>
         )}

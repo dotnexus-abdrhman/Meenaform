@@ -237,6 +237,12 @@ export function PDFPreview({ sampleData }: PDFPreviewProps) {
             </Button>
           </div>
         </div>
+
+        {/* Desktop recommendation hint */}
+        <p className="text-xs text-muted-foreground mt-2 sm:hidden flex items-center gap-1.5 px-1">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+          استخدام الكمبيوتر يعطيك تجربة أفضل في التحرير التفاعلي
+        </p>
       </CardHeader>
       
       <CardContent className="flex-1 p-0 relative">

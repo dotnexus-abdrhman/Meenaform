@@ -1,7 +1,7 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ParticipateHeaderProps {
   creatorName: string;
@@ -14,11 +14,15 @@ export default function ParticipateHeader({ creatorName }: ParticipateHeaderProp
         <div className="flex items-center justify-center h-16">
           {/* Logo - مطابق للوحة التحكم */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative bg-[#1a56db] p-2 rounded-xl group-hover:bg-[#1648c7] transition-colors duration-200">
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="مينا إيفنت"
+              width={40}
+              height={40}
+              className="rounded-lg"
+            />
             <span className="text-2xl font-bold text-gray-900">
-              Event <span className="text-[#1a56db]">Meena</span>
+              مينا <span className="text-[#1a56db]">إيفنت</span>
             </span>
           </Link>
         </div>

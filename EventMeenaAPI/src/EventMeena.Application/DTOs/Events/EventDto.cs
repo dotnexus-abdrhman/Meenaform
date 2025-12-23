@@ -35,6 +35,11 @@ public class EventDto
     public string? SuccessMessage { get; set; }
     public string? GoodMessage { get; set; }
     public string? ImprovementMessage { get; set; }
+
+    // إعدادات الحدث الخاص (Private Event)
+    public bool IsPrivate { get; set; }
+    public List<string>? AllowedEmails { get; set; }
+
     public int ViewCount { get; set; }
     public int ResponseCount { get; set; }
     public DateTime CreatedAt { get; set; }

@@ -7,7 +7,7 @@ import { useAuthStore } from "@/store/authStore";
 import { eventsService } from "@/lib/api/services/eventsService";
 import { Event } from "@/types/event";
 import { ParticipantInfo } from "@/types/response";
-import { Loader2, AlertCircle, Lock, Calendar, Clock } from "lucide-react";
+import { Loader2, Calendar, Clock, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { ar } from "date-fns/locale";
 import ParticipateHeader from "@/components/events/participate/ParticipateHeader";
@@ -63,10 +63,14 @@ export default function EventParticipatePage() {
     console.log("🔍 Checking participant info...");
     console.log("currentEvent:", currentEvent);
     console.log("requireAuth:", currentEvent?.settings.requireAuth);
+    console.log("isPrivate:", currentEvent?.settings.isPrivate);
     console.log("user:", user);
 
-    if (currentEvent?.settings.requireAuth && !user) {
-      console.log("✅ requireAuth is true and no user logged in");
+    // نعرض النموذج إذا كان الحدث يتطلب تسجيل أو كان خاص
+    const needsAuth = currentEvent?.settings.requireAuth || currentEvent?.settings.isPrivate;
+
+    if (needsAuth && !user) {
+      console.log("✅ Auth/Private required and no user logged in");
       const savedInfo = localStorage.getItem("participantInfo");
       console.log("savedInfo from localStorage:", savedInfo);
 
@@ -74,8 +78,32 @@ export default function EventParticipatePage() {
         try {
           const info = JSON.parse(savedInfo);
           console.log("✅ Found saved participant info:", info);
-          setParticipantInfo(info);
-          setShowParticipantForm(false);
+
+          // للحدث الخاص، نتحقق أيضاً من الوصول المحفوظ
+          if (currentEvent?.settings.isPrivate) {
+            const savedAccess = localStorage.getItem(`privateAccess_${currentEvent.id}`);
+            if (savedAccess) {
+              const accessData = JSON.parse(savedAccess);
+              // التحقق من أن الإيميل المحفوظ لا يزال في قائمة المسموح لهم
+              if (currentEvent.settings.allowedEmails?.some(
+                (email) => email.toLowerCase() === accessData.email.toLowerCase()
+              )) {
+                setParticipantInfo(info);
+                setShowParticipantForm(false);
+              } else {
+                // الإيميل لم يعد مسموحاً له
+                localStorage.removeItem(`privateAccess_${currentEvent.id}`);
+                localStorage.removeItem("participantInfo");
+                setShowParticipantForm(true);
+              }
+            } else {
+              // لا يوجد وصول محفوظ للحدث الخاص
+              setShowParticipantForm(true);
+            }
+          } else {
+            setParticipantInfo(info);
+            setShowParticipantForm(false);
+          }
         } catch (e) {
           console.log("❌ Error parsing saved info, showing form");
           setShowParticipantForm(true);
@@ -85,7 +113,7 @@ export default function EventParticipatePage() {
         setShowParticipantForm(true);
       }
     } else {
-      console.log("❌ requireAuth is false or user is logged in");
+      console.log("❌ Auth not required or user is logged in");
       setShowParticipantForm(false);
     }
   }, [currentEvent, user]);
@@ -211,19 +239,29 @@ export default function EventParticipatePage() {
   }
 
   // إذا كان الحدث يتطلب معلومات المشارك ولم يتم إدخالها بعد
+  // (سواء كان requireAuth مفعّل أو الحدث خاص)
+  const needsParticipantForm =
+    (currentEvent.settings.requireAuth || currentEvent.settings.isPrivate) &&
+    !user &&
+    showParticipantForm;
+
   console.log("🎯 Checking if should show ParticipantInfoForm:");
   console.log("  - requireAuth:", currentEvent.settings.requireAuth);
+  console.log("  - isPrivate:", currentEvent.settings.isPrivate);
   console.log("  - user:", user);
   console.log("  - showParticipantForm:", showParticipantForm);
-  console.log("  - Final condition:", currentEvent.settings.requireAuth && !user && showParticipantForm);
+  console.log("  - Final condition:", needsParticipantForm);
 
-  if (currentEvent.settings.requireAuth && !user && showParticipantForm) {
+  if (needsParticipantForm) {
     console.log("✅ SHOWING ParticipantInfoForm!");
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <ParticipateHeader creatorName={currentEvent.userId || ""} />
         <ParticipantInfoForm
           eventTitle={currentEvent.title}
+          eventId={currentEvent.id}
+          isPrivateEvent={currentEvent.settings.isPrivate}
+          allowedEmails={currentEvent.settings.allowedEmails || []}
           onSubmit={handleParticipantInfoSubmit}
         />
         <ParticipateFooter />
@@ -238,7 +276,7 @@ export default function EventParticipatePage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <ParticipateHeader creatorName={currentEvent.userId || ""} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <div className="max-w-4xl mx-auto">
           {/* Event Info */}
           <EventInfo event={currentEvent} />

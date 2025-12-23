@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { UserCircle, Mail, ArrowLeft, Loader2 } from "lucide-react";
+import { UserCircle, Mail, ArrowLeft, Loader2, Shield, AlertCircle } from "lucide-react";
 import { ParticipantInfo } from "@/types/response";
 
 // Schema للتحقق من صحة البيانات
@@ -21,14 +21,21 @@ type ParticipantInfoFormData = z.infer<typeof participantInfoSchema>;
 
 interface ParticipantInfoFormProps {
   eventTitle: string;
+  eventId?: string;
+  isPrivateEvent?: boolean;
+  allowedEmails?: string[];
   onSubmit: (info: ParticipantInfo) => void;
 }
 
 export default function ParticipantInfoForm({
   eventTitle,
+  eventId,
+  isPrivateEvent = false,
+  allowedEmails = [],
   onSubmit,
 }: ParticipantInfoFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [privateAccessError, setPrivateAccessError] = useState("");
 
   const {
     register,
@@ -40,18 +47,40 @@ export default function ParticipantInfoForm({
 
   const onFormSubmit = async (data: ParticipantInfoFormData) => {
     setIsSubmitting(true);
-    
+    setPrivateAccessError("");
+
+    // التحقق من الوصول للحدث الخاص
+    if (isPrivateEvent && allowedEmails.length > 0) {
+      const isAllowed = allowedEmails.some(
+        (email) => email.toLowerCase() === data.email.toLowerCase()
+      );
+
+      if (!isAllowed) {
+        setPrivateAccessError("عذراً، هذا البريد الإلكتروني غير مسموح له بالوصول لهذا الحدث");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // حفظ الوصول للحدث الخاص
+      if (eventId) {
+        localStorage.setItem(
+          `privateAccess_${eventId}`,
+          JSON.stringify({ email: data.email, timestamp: Date.now() })
+        );
+      }
+    }
+
     // حفظ المعلومات في localStorage
     const participantInfo: ParticipantInfo = {
       name: data.name,
       email: data.email,
     };
-    
+
     localStorage.setItem("participantInfo", JSON.stringify(participantInfo));
-    
+
     // تأخير بسيط لتحسين التجربة
     await new Promise((resolve) => setTimeout(resolve, 500));
-    
+
     onSubmit(participantInfo);
     setIsSubmitting(false);
   };
@@ -116,23 +145,45 @@ export default function ParticipantInfoForm({
                   {...register("email")}
                   className={`
                     pr-10 h-12 text-base
-                    ${errors.email ? "border-red-500 focus:ring-red-500" : ""}
+                    ${errors.email || privateAccessError ? "border-red-500 focus:ring-red-500" : ""}
                   `}
                   disabled={isSubmitting}
                   dir="ltr"
+                  onChange={() => setPrivateAccessError("")}
                 />
               </div>
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
               )}
+              {privateAccessError && (
+                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-4 h-4" />
+                  {privateAccessError}
+                </p>
+              )}
             </div>
 
+            {/* تنبيه الحدث الخاص */}
+            {isPrivateEvent && (
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 flex items-start gap-3">
+                <Shield className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-purple-900">هذا حدث خاص</p>
+                  <p className="text-sm text-purple-700">
+                    متاح فقط للمدعوين. تأكد من استخدام البريد الإلكتروني الذي تمت دعوتك به.
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* ملاحظة */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-sm text-blue-800 text-center">
-                <span className="font-semibold">ملاحظة:</span> هذه المعلومات ستُستخدم فقط لأغراض التحليل والتواصل معك
-              </p>
-            </div>
+            {!isPrivateEvent && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="text-sm text-blue-800 text-center">
+                  <span className="font-semibold">ملاحظة:</span> هذه المعلومات ستُستخدم فقط لأغراض التحليل والتواصل معك
+                </p>
+              </div>
+            )}
 
             {/* زر الإرسال */}
             <Button

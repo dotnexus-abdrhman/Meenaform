@@ -147,5 +147,20 @@ public class ResponseRepository : GenericRepository<Response>, IResponseReposito
 
         return await query.CountAsync();
     }
+
+    public async Task<IReadOnlyList<Response>> GetByRespondentEmailWithEventAsync(string email)
+    {
+        return await _dbSet
+            .Include(r => r.Event)
+                .ThenInclude(e => e.User)
+            .Include(r => r.Event)
+                .ThenInclude(e => e.Sections)
+                    .ThenInclude(s => s.Components)
+            .Where(r => r.RespondentEmail != null &&
+                       r.RespondentEmail.ToLower() == email.ToLower() &&
+                       r.Status == ResponseStatus.Completed)
+            .OrderByDescending(r => r.CompletedAt ?? r.CreatedAt)
+            .ToListAsync();
+    }
 }
 

@@ -8,7 +8,6 @@ import {
   Edit,
   Share2,
   Copy,
-  Archive,
   Trash2,
   MoreVertical,
   Eye,
@@ -63,7 +62,6 @@ const eventTypeConfig = {
 export default function EventDetailsHeader({
   event,
   onDuplicate,
-  onArchive,
   onDelete,
   onShare,
   onSaveAsTemplate,
@@ -232,10 +230,6 @@ export default function EventDetailsHeader({
                   نسخ الحدث
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={onArchive}>
-                  <Archive className="w-4 h-4 ml-2" />
-                  أرشفة
-                </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={onDelete}
                   className="text-red-600 focus:text-red-600"

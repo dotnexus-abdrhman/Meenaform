@@ -552,14 +552,6 @@ export default function ParticipantAnswers({ event, response }: ParticipantAnswe
                 </span>
               </div>
             )}
-
-            {/* Time Spent */}
-            {answer && answer.timeSpent !== undefined && (
-              <div className="mr-11 mt-2 flex items-center gap-2 text-sm text-gray-600">
-                <span>الوقت المستغرق:</span>
-                <span className="font-medium">{answer.timeSpent} ثانية</span>
-              </div>
-            )}
           </Card>
         );
       })}

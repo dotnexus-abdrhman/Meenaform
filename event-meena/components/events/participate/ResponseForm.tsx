@@ -534,53 +534,53 @@ export default function ResponseForm({ event, participantInfo, isPreviewMode = f
       )}
 
       {/* Navigation Buttons */}
-      <div className={`${styles.cardClass} rounded-xl p-6`}>
-        <div className="flex items-center justify-between gap-4">
+      <div className={`${styles.cardClass} rounded-lg sm:rounded-xl p-4 sm:p-6`}>
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
           {/* Previous Button */}
           <Button
             variant="outline"
-            size="lg"
+            size="default"
             onClick={handlePrevious}
             disabled={isFirstSection || isSubmitting}
-            className="flex-1 md:flex-none"
+            className="flex-1 md:flex-none text-sm sm:text-base h-10 sm:h-11"
           >
-            <ArrowRight className="w-5 h-5 ml-2" />
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
             السابق
           </Button>
 
           {/* Next/Submit Button */}
           <Button
-            size="lg"
+            size="default"
             onClick={handleNext}
             disabled={isPreviewMode ? isLastSection : (!isSectionComplete() || isSubmitting)}
-            className={`flex-1 md:flex-none md:min-w-[200px] ${styles.buttonClass}`}
+            className={`flex-1 md:flex-none md:min-w-[200px] text-sm sm:text-base h-10 sm:h-11 ${styles.buttonClass}`}
           >
             {isPreviewMode ? (
               isLastSection ? (
                 <>
-                  <CheckCircle className="w-5 h-5 mr-2" />
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
                   معاينة فقط
                 </>
               ) : (
                 <>
                   {event.type === "quiz" ? "السؤال التالي" : "التالي"}
-                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
                 </>
               )
             ) : isSubmitting ? (
               <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 animate-spin" />
                 جاري الإرسال...
               </>
             ) : isLastSection ? (
               <>
-                <CheckCircle className="w-5 h-5 mr-2" />
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
                 {event.type === "quiz" ? "إنهاء الاختبار" : "إرسال الإجابات"}
               </>
             ) : (
               <>
                 {event.type === "quiz" ? "السؤال التالي" : "التالي"}
-                <ArrowLeft className="w-5 h-5 mr-2" />
+                <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
               </>
             )}
           </Button>

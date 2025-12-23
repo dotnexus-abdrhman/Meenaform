@@ -7,11 +7,16 @@ import { apiClient, ApiResponse } from "../client";
 import {
   BackendResponseDto,
   BackendPagedResult,
+  BackendParticipationDto,
+  BackendParticipationDetailsDto,
   mapResponse,
   mapResponseToBackendStart,
   mapSectionAnswersToBackend,
+  mapParticipation,
+  mapParticipationDetails,
 } from "../mappers";
 import { Response, ComponentAnswer, ParticipantInfo } from "@/types/response";
+import { ParticipatedEvent, ParticipationDetails } from "@/types/participation";
 
 // ============================================================
 // أنواع الطلبات
@@ -198,6 +203,40 @@ export const responsesService = {
     }
 
     return mapResponse(response.data.data);
+  },
+
+  // ============================================================
+  // مشاركاتي - الأحداث التي شاركت فيها
+  // ============================================================
+
+  /**
+   * جلب جميع الأحداث التي شاركت فيها
+   */
+  getMyParticipations: async (): Promise<ParticipatedEvent[]> => {
+    const response = await apiClient.get<ApiResponse<BackendParticipationDto[]>>(
+      "/Responses/my-participations"
+    );
+
+    if (!response.data.success || !response.data.data) {
+      throw new Error(response.data.message || "فشل جلب المشاركات");
+    }
+
+    return response.data.data.map(mapParticipation);
+  },
+
+  /**
+   * جلب تفاصيل مشاركة معينة
+   */
+  getParticipationDetails: async (responseId: string): Promise<ParticipationDetails> => {
+    const response = await apiClient.get<ApiResponse<BackendParticipationDetailsDto>>(
+      `/Responses/my-participations/${responseId}`
+    );
+
+    if (!response.data.success || !response.data.data) {
+      throw new Error(response.data.message || "فشل جلب تفاصيل المشاركة");
+    }
+
+    return mapParticipationDetails(response.data.data);
   },
 };
 

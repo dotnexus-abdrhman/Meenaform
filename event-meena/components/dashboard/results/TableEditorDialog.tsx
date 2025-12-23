@@ -154,45 +154,7 @@ export function TableEditorDialog({
           <div className="space-y-4">
             <Label className="text-base font-semibold">إعدادات الجدول</Label>
 
-            <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border">
-              {/* Header Color */}
-              <div className="space-y-2">
-                <Label htmlFor="header-color" className="text-sm font-medium">
-                  لون رأس الجدول
-                </Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="header-color"
-                    type="color"
-                    value={headerColor}
-                    onChange={(e) => setHeaderColor(e.target.value)}
-                    className="w-20 h-10 cursor-pointer"
-                  />
-                  <Input
-                    value={headerColor}
-                    onChange={(e) => setHeaderColor(e.target.value)}
-                    placeholder="#1a56db"
-                    className="flex-1"
-                  />
-                </div>
-              </div>
-
-              {/* Font Size */}
-              <div className="space-y-2">
-                <Label htmlFor="font-size" className="text-sm font-medium">
-                  حجم الخط
-                </Label>
-                <Input
-                  id="font-size"
-                  type="number"
-                  min="8"
-                  max="16"
-                  value={fontSize}
-                  onChange={(e) => setFontSize(Number(e.target.value))}
-                  className="w-full"
-                />
-              </div>
-
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border">
               {/* Serial Number Checkbox */}
               <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-900 rounded border">
                 <Checkbox
@@ -201,7 +163,7 @@ export function TableEditorDialog({
                   onCheckedChange={(checked) => setIncludeSerialNumber(checked as boolean)}
                 />
                 <Label htmlFor="include-serial" className="cursor-pointer text-sm font-medium">
-                  إضافة ترقيم تسلسلي (#)
+                  ترقيم تسلسلي (#)
                 </Label>
               </div>
 
@@ -218,14 +180,14 @@ export function TableEditorDialog({
               </div>
 
               {/* Show Title Checkbox */}
-              <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-900 rounded border col-span-2">
+              <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-900 rounded border">
                 <Checkbox
                   id="show-title"
                   checked={showTitle}
                   onCheckedChange={(checked) => setShowTitle(checked as boolean)}
                 />
                 <Label htmlFor="show-title" className="cursor-pointer text-sm font-medium">
-                  إظهار عنوان الجدول في PDF
+                  إظهار عنوان الجدول
                 </Label>
               </div>
             </div>

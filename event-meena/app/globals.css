@@ -440,3 +440,13 @@
 .scrollbar-visible::-webkit-scrollbar-corner {
   background: #f0f0f0;
 }
+
+/* Hide scrollbar but allow scroll */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

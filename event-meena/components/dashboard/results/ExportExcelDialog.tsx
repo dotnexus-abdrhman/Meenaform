@@ -590,7 +590,7 @@ export default function ExportExcelDialog({
                   <Input
                     id="customFooter"
                     type="text"
-                    placeholder="مثال: تم إنشاء هذا التقرير بواسطة Event Meena"
+                    placeholder="مثال: تم إنشاء هذا التقرير بواسطة مينا إيفنت"
                     value={config.customFooter || ""}
                     onChange={(e) =>
                       setConfig({ ...config, customFooter: e.target.value })

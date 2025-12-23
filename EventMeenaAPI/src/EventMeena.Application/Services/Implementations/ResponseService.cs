@@ -275,5 +275,137 @@ public class ResponseService : IResponseService
 
         return ApiResponse<ResponseDto>.SuccessResponse(_mapper.Map<ResponseDto>(response), "تم تحديث الرد بنجاح");
     }
+
+    public async Task<ApiResponse<List<ParticipationDto>>> GetMyParticipationsAsync(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+            return ApiResponse<List<ParticipationDto>>.FailureResponse("البريد الإلكتروني مطلوب");
+
+        var responses = await _unitOfWork.Responses.GetByRespondentEmailWithEventAsync(email);
+
+        var participations = responses.Select(r => new ParticipationDto
+        {
+            ResponseId = r.Id,
+            EventId = r.EventId,
+            EventTitle = r.Event.Title,
+            EventDescription = r.Event.Description,
+            EventType = r.Event.Type,
+            OwnerName = r.Event.User?.FullName ?? "غير معروف",
+            ParticipatedAt = r.StartedAt,
+            CompletedAt = r.CompletedAt,
+            DurationSeconds = r.DurationSeconds,
+            Status = r.Status,
+            Score = r.Score,
+            TotalPoints = r.TotalPoints,
+            Percentage = r.Percentage,
+            IsPassed = r.IsPassed,
+            AnswersJson = r.AnswersJson
+        }).ToList();
+
+        return ApiResponse<List<ParticipationDto>>.SuccessResponse(participations);
+    }
+
+    public async Task<ApiResponse<ParticipationDetailsDto>> GetParticipationDetailsAsync(Guid responseId, string email)
+    {
+        if (string.IsNullOrEmpty(email))
+            return ApiResponse<ParticipationDetailsDto>.FailureResponse("البريد الإلكتروني مطلوب");
+
+        var responses = await _unitOfWork.Responses.GetByRespondentEmailWithEventAsync(email);
+        var response = responses.FirstOrDefault(r => r.Id == responseId);
+
+        if (response == null)
+            return ApiResponse<ParticipationDetailsDto>.FailureResponse("المشاركة غير موجودة أو لا تملك صلاحية الوصول");
+
+        var details = new ParticipationDetailsDto
+        {
+            ResponseId = response.Id,
+            EventId = response.EventId,
+            EventTitle = response.Event.Title,
+            EventDescription = response.Event.Description,
+            EventType = response.Event.Type,
+            OwnerName = response.Event.User?.FullName ?? "غير معروف",
+            ParticipatedAt = response.StartedAt,
+            CompletedAt = response.CompletedAt,
+            DurationSeconds = response.DurationSeconds,
+            Status = response.Status,
+            Score = response.Score,
+            TotalPoints = response.TotalPoints,
+            Percentage = response.Percentage,
+            IsPassed = response.IsPassed,
+            AnswersJson = response.AnswersJson,
+            Sections = response.Event.Sections
+                .OrderBy(s => s.Order)
+                .Select(s => new ParticipationSectionDto
+                {
+                    Id = s.Id,
+                    Title = s.Title,
+                    Description = s.Description,
+                    Order = s.Order,
+                    Components = s.Components
+                        .OrderBy(c => c.Order)
+                        .Select(c => new ParticipationComponentDto
+                        {
+                            Id = c.Id,
+                            Type = c.Type,
+                            Order = c.Order,
+                            SettingsJson = BuildComponentSettingsJson(c)
+                        }).ToList()
+                }).ToList()
+        };
+
+        return ApiResponse<ParticipationDetailsDto>.SuccessResponse(details);
+    }
+
+    /// <summary>
+    /// بناء JSON للإعدادات من خصائص المكون
+    /// </summary>
+    private static string BuildComponentSettingsJson(Domain.Entities.Component c)
+    {
+        var settings = new Dictionary<string, object?>
+        {
+            ["label"] = c.Title,
+            ["description"] = c.Description,
+            ["placeholder"] = c.Placeholder,
+            ["required"] = c.IsRequired,
+            ["isVisible"] = c.IsVisible,
+            ["minValue"] = c.MinValue,
+            ["maxValue"] = c.MaxValue,
+            ["minLabel"] = c.MinLabel,
+            ["maxLabel"] = c.MaxLabel,
+            ["points"] = c.Points,
+            ["explanation"] = c.Explanation,
+            ["mediaUrl"] = c.MediaUrl,
+            ["mediaType"] = c.MediaType
+        };
+
+        // إضافة الخيارات إن وجدت
+        if (!string.IsNullOrEmpty(c.OptionsJson))
+        {
+            try
+            {
+                var options = System.Text.Json.JsonSerializer.Deserialize<object>(c.OptionsJson);
+                settings["choices"] = options;
+            }
+            catch { }
+        }
+
+        // إضافة الإجابة الصحيحة إن وجدت
+        if (!string.IsNullOrEmpty(c.CorrectAnswerJson))
+        {
+            try
+            {
+                var correctAnswer = System.Text.Json.JsonSerializer.Deserialize<object>(c.CorrectAnswerJson);
+                settings["correctAnswer"] = correctAnswer;
+            }
+            catch { }
+        }
+
+        // إزالة القيم الفارغة
+        var filteredSettings = settings
+            .Where(kv => kv.Value != null)
+            .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+        return System.Text.Json.JsonSerializer.Serialize(filteredSettings);
+    }
 }
 

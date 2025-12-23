@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   Dialog,
   DialogContent,
@@ -56,6 +56,23 @@ export default function ExportPDFDialog({
   const [isExporting, setIsExporting] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const backgroundImageInputRef = useRef<HTMLInputElement>(null);
+  const tabsListRef = useRef<HTMLDivElement>(null);
+
+  // Horizontal scroll with mouse wheel for tabs
+  useEffect(() => {
+    const tabsList = tabsListRef.current;
+    if (!tabsList) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > 0) {
+        e.preventDefault();
+        tabsList.scrollLeft += e.deltaY;
+      }
+    };
+
+    tabsList.addEventListener("wheel", handleWheel, { passive: false });
+    return () => tabsList.removeEventListener("wheel", handleWheel);
+  }, []);
 
   // Get question/rating/signature components for selection
   const questionComponents = components.filter(c => c.type === "question" || c.type === "rating" || c.type === "signature");
@@ -291,34 +308,37 @@ export default function ExportPDFDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl flex items-center gap-2">
-            <FileDown className="w-6 h-6 text-primary" />
-            تصدير النتائج إلى PDF
+      <DialogContent className="w-[95vw] max-w-3xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+        <DialogHeader className="pb-3 border-b">
+          <DialogTitle className="text-xl sm:text-2xl flex items-center gap-2">
+            <FileDown className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+            <span className="truncate">تصدير النتائج إلى PDF</span>
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-sm">
             قم بتخصيص شكل ومحتوى ملف PDF قبل التصدير
           </DialogDescription>
         </DialogHeader>
 
         <Tabs defaultValue="layout" className="w-full">
-          <TabsList className="flex w-full overflow-x-auto no-scrollbar">
-            <TabsTrigger value="layout" className="flex-shrink-0">التخطيط</TabsTrigger>
-            {config.layout === "custom-tables" ? (
-              <TabsTrigger value="custom-tables" className="flex-shrink-0">
-                <Table2 className="w-4 h-4 ml-1" />
-                <span className="hidden sm:inline">جداول مخصصة</span>
-                <span className="sm:hidden">جداول</span>
-              </TabsTrigger>
-            ) : (
-              <TabsTrigger value="components" className="flex-shrink-0">المكونات</TabsTrigger>
-            )}
-            <TabsTrigger value="colors" className="flex-shrink-0">الألوان</TabsTrigger>
-            <TabsTrigger value="logo" className="flex-shrink-0">الشعار</TabsTrigger>
-            <TabsTrigger value="content" className="flex-shrink-0">المحتوى</TabsTrigger>
-            <TabsTrigger value="info" className="flex-shrink-0">معلومات</TabsTrigger>
-          </TabsList>
+          <div ref={tabsListRef} className="overflow-x-auto no-scrollbar">
+            <TabsList className="inline-flex w-max min-w-full gap-1 p-1">
+              <TabsTrigger value="layout" className="flex-shrink-0 text-xs sm:text-sm px-2 sm:px-3">التخطيط</TabsTrigger>
+              {config.layout === "custom-tables" ? (
+                <TabsTrigger value="custom-tables" className="flex-shrink-0 text-xs sm:text-sm px-2 sm:px-3">
+                  <Table2 className="w-4 h-4 sm:ml-1" />
+                  <span className="hidden sm:inline">جداول مخصصة</span>
+                </TabsTrigger>
+              ) : (
+                <>
+                  <TabsTrigger value="components" className="flex-shrink-0 text-xs sm:text-sm px-2 sm:px-3">المكونات</TabsTrigger>
+                  <TabsTrigger value="colors" className="flex-shrink-0 text-xs sm:text-sm px-2 sm:px-3">الألوان</TabsTrigger>
+                  <TabsTrigger value="logo" className="flex-shrink-0 text-xs sm:text-sm px-2 sm:px-3">الشعار</TabsTrigger>
+                  <TabsTrigger value="content" className="flex-shrink-0 text-xs sm:text-sm px-2 sm:px-3">المحتوى</TabsTrigger>
+                  <TabsTrigger value="info" className="flex-shrink-0 text-xs sm:text-sm px-2 sm:px-3">معلومات</TabsTrigger>
+                </>
+              )}
+            </TabsList>
+          </div>
 
           {/* Layout Tab */}
           <TabsContent value="layout" className="space-y-4">
@@ -346,79 +366,79 @@ export default function ExportPDFDialog({
                 // Multiple participants mode - show both options
                 <div className="space-y-3">
                   <div
-                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    className={`p-3 sm:p-4 border-2 rounded-lg cursor-pointer transition-all ${
                       config.layout === "single-table"
                         ? "border-primary bg-primary/5"
                         : "border-gray-200 hover:border-primary/50"
                     }`}
                     onClick={() => setConfig({ ...config, layout: "single-table" })}
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center mt-0.5">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center mt-0.5 flex-shrink-0">
                         {config.layout === "single-table" && (
                           <div className="w-3 h-3 rounded-full bg-primary" />
                         )}
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1">
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
                           جدول واحد لجميع المشاركين
                         </h4>
-                        <p className="text-sm text-gray-600">
-                          جدول كبير يحتوي على جميع المشاركين وإجاباتهم. كل صف يمثل مشاركاً واحداً.
+                        <p className="text-xs sm:text-sm text-gray-600">
+                          جدول كبير يحتوي على جميع المشاركين وإجاباتهم.
                         </p>
                       </div>
                     </div>
                   </div>
 
                   <div
-                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    className={`p-3 sm:p-4 border-2 rounded-lg cursor-pointer transition-all ${
                       config.layout === "separate-tables"
                         ? "border-primary bg-primary/5"
                         : "border-gray-200 hover:border-primary/50"
                     }`}
                     onClick={() => setConfig({ ...config, layout: "separate-tables" })}
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center mt-0.5">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center mt-0.5 flex-shrink-0">
                         {config.layout === "separate-tables" && (
                           <div className="w-3 h-3 rounded-full bg-primary" />
                         )}
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1">
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
                           جدول منفصل لكل مشارك
                         </h4>
-                        <p className="text-sm text-gray-600">
-                          كل مشارك له صفحة خاصة مع جدول يعرض أسئلته وإجاباته بشكل تفصيلي.
+                        <p className="text-xs sm:text-sm text-gray-600">
+                          كل مشارك له صفحة خاصة مع جدول تفصيلي.
                         </p>
                       </div>
                     </div>
                   </div>
 
                   <div
-                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                    className={`p-3 sm:p-4 border-2 rounded-lg cursor-pointer transition-all ${
                       config.layout === "custom-tables"
                         ? "border-primary bg-primary/5"
                         : "border-gray-200 hover:border-primary/50"
                     }`}
                     onClick={() => setConfig({ ...config, layout: "custom-tables" })}
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center mt-0.5">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center mt-0.5 flex-shrink-0">
                         {config.layout === "custom-tables" && (
                           <div className="w-3 h-3 rounded-full bg-primary" />
                         )}
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
-                          <Table2 className="w-4 h-4" />
-                          جداول متعددة مخصصة
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base flex flex-wrap items-center gap-1 sm:gap-2">
+                          <Table2 className="w-4 h-4 flex-shrink-0" />
+                          <span>جداول متعددة مخصصة</span>
                           <span className="text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-0.5 rounded-full">
                             جديد
                           </span>
                         </h4>
-                        <p className="text-sm text-gray-600">
-                          أنشئ عدة جداول مخصصة بمكونات مختلفة لكل جدول. تحكم كامل في التنظيم والتنسيق.
+                        <p className="text-xs sm:text-sm text-gray-600">
+                          أنشئ عدة جداول مخصصة بمكونات مختلفة.
                         </p>
                       </div>
                     </div>
@@ -427,47 +447,79 @@ export default function ExportPDFDialog({
               )}
             </div>
 
-            {/* Font Settings */}
-            <div className="space-y-3 pt-4 border-t">
-              <Label className="text-base font-semibold">إعدادات الخط</Label>
-              
-              <div className="space-y-3">
-                <div>
-                  <Label htmlFor="fontSize" className="text-sm mb-2 block">
-                    حجم الخط: {config.fontSize}
-                  </Label>
-                  <Slider
-                    id="fontSize"
-                    min={8}
-                    max={18}
-                    step={1}
-                    value={[config.fontSize]}
-                    onValueChange={(value) => setConfig({ ...config, fontSize: value[0] })}
-                    className="w-full"
-                  />
-                </div>
+            {/* Font Settings - Hidden for custom tables */}
+            {config.layout !== "custom-tables" ? (
+              <div className="space-y-3 pt-4 border-t">
+                <Label className="text-sm sm:text-base font-semibold">إعدادات الخط</Label>
 
-                <div>
-                  <Label htmlFor="fontFamily" className="text-sm mb-2 block">
-                    نوع الخط
-                  </Label>
-                  <Select
-                    value={config.fontFamily}
-                    onValueChange={(value) => setConfig({ ...config, fontFamily: value })}
-                  >
-                    <SelectTrigger id="fontFamily">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Arial">Arial</SelectItem>
-                      <SelectItem value="Helvetica">Helvetica</SelectItem>
-                      <SelectItem value="Times">Times New Roman</SelectItem>
-                      <SelectItem value="Courier">Courier</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="space-y-3">
+                  <div>
+                    <Label htmlFor="fontSize" className="text-xs sm:text-sm mb-2 block">
+                      حجم الخط: {config.fontSize}
+                    </Label>
+                    <Slider
+                      id="fontSize"
+                      min={8}
+                      max={18}
+                      step={1}
+                      value={[config.fontSize]}
+                      onValueChange={(value) => setConfig({ ...config, fontSize: value[0] })}
+                      className="w-full"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="fontFamily" className="text-xs sm:text-sm mb-2 block">
+                      نوع الخط
+                    </Label>
+                    <Select
+                      value={config.fontFamily}
+                      onValueChange={(value) => setConfig({ ...config, fontFamily: value })}
+                    >
+                      <SelectTrigger id="fontFamily" className="text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Arial">Arial</SelectItem>
+                        <SelectItem value="Helvetica">Helvetica</SelectItem>
+                        <SelectItem value="Times">Times New Roman</SelectItem>
+                        <SelectItem value="Courier">Courier</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              /* Custom Tables Guide Message */
+              <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 border border-purple-100">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-purple-100 shrink-0">
+                    <Sparkles className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div className="space-y-3 flex-1">
+                    <h4 className="font-semibold text-gray-900">كيف تبدأ؟</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2">
+                        <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                        <p className="text-sm text-gray-700">انتقل إلى تبويب <span className="font-semibold text-purple-600">جداول مخصصة</span> وأنشئ جدولاً بالمكونات التي تريدها</p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                        <p className="text-sm text-gray-700">افتح <span className="font-semibold text-purple-600">محرر PDF المتقدم</span> واختر تصميم جدول احترافي</p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                        <p className="text-sm text-gray-700">استخدم <span className="font-semibold text-purple-600">التحرير المتقدم</span> لتعديل التفاصيل بشكل مباشر</p>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 pt-1 flex items-center gap-1">
+                      <span>✨</span>
+                      <span>تجربة تصميم متكاملة لإنشاء PDF احترافي</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </TabsContent>
 
           {/* Custom Tables Tab - NEW */}
@@ -1116,19 +1168,21 @@ export default function ExportPDFDialog({
             </Button>
           )}
 
-          <Button onClick={() => handleExport()} disabled={isExporting} className="w-full sm:w-auto">
-            {isExporting ? (
-              <>
-                <Loader2 className="w-4 h-4 ml-2 animate-spin" />
-                جاري التصدير...
-              </>
-            ) : (
-              <>
-                <FileDown className="w-4 h-4 ml-2" />
-                تصدير PDF
-              </>
-            )}
-          </Button>
+          {config.layout !== "custom-tables" && (
+            <Button onClick={() => handleExport()} disabled={isExporting} className="w-full sm:w-auto">
+              {isExporting ? (
+                <>
+                  <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                  جاري التصدير...
+                </>
+              ) : (
+                <>
+                  <FileDown className="w-4 h-4 ml-2" />
+                  تصدير PDF
+                </>
+              )}
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
 

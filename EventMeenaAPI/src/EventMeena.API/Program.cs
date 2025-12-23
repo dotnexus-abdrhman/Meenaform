@@ -207,6 +207,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline
 // ===========================================
 
+// CORS must be first to handle preflight OPTIONS requests
+app.UseCors("AllowFrontend");
+
 // Enable Swagger in Development and Production (for API documentation)
 app.UseSwagger(options =>
 {
@@ -229,8 +232,8 @@ app.UseSwaggerUI(options =>
 // Global Exception Handling Middleware
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseHttpsRedirection();
-app.UseCors("AllowFrontend");
+// Skip HTTPS redirection for HTTP-only deployment
+// app.UseHttpsRedirection();
 
 // Static Files for uploaded files (images, videos, pdfs, signatures)
 app.UseStaticFiles();

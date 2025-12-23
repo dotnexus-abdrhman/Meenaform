@@ -18,5 +18,15 @@ public interface IResponseService
     Task<ApiResponse<ResponseDto>> UpdateResponseAnswersAsync(Guid responseId, UpdateResponseAnswersRequest request);
     Task<ApiResponse> DeleteAsync(Guid id, Guid userId);
     Task<ApiResponse> DeleteByEventIdAsync(Guid eventId, Guid userId);
+
+    /// <summary>
+    /// الحصول على جميع الأحداث التي شارك فيها المستخدم
+    /// </summary>
+    Task<ApiResponse<List<ParticipationDto>>> GetMyParticipationsAsync(string email);
+
+    /// <summary>
+    /// الحصول على تفاصيل مشاركة معينة
+    /// </summary>
+    Task<ApiResponse<ParticipationDetailsDto>> GetParticipationDetailsAsync(Guid responseId, string email);
 }
 

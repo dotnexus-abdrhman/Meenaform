@@ -30,5 +30,10 @@ public interface IResponseRepository : IGenericRepository<Response>
     /// الحصول على إجمالي الردود المكتملة لمستخدم معين خلال فترة محددة
     /// </summary>
     Task<int> GetCompletedResponsesCountAsync(Guid userId, DateTime? startDate = null, DateTime? endDate = null);
+
+    /// <summary>
+    /// الحصول على جميع الردود لإيميل معين مع تفاصيل الحدث
+    /// </summary>
+    Task<IReadOnlyList<Response>> GetByRespondentEmailWithEventAsync(string email);
 }
 

@@ -191,42 +191,45 @@ export default function SectionBuilder({
                 key={component.id}
                 className="p-4 hover:shadow-lg transition-all border-2 border-gray-100 hover:border-primary/30 bg-white"
               >
-                <div className="flex items-center gap-3">
-                  {/* Drag Handle */}
-                  <div className="cursor-move text-gray-500 hover:text-gray-700">
-                    <GripVertical className="w-5 h-5" />
-                  </div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                  {/* Top Row: Drag Handle + Icon + Info */}
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    {/* Drag Handle */}
+                    <div className="cursor-move text-gray-500 hover:text-gray-700 flex-shrink-0">
+                      <GripVertical className="w-5 h-5" />
+                    </div>
 
-                  {/* Icon */}
-                  <div className={`p-3 rounded-lg ${colors.bg} border border-gray-200`}>
-                    <Icon className={`w-6 h-6 ${colors.text}`} />
-                  </div>
+                    {/* Icon */}
+                    <div className={`p-3 rounded-lg ${colors.bg} border border-gray-200 flex-shrink-0`}>
+                      <Icon className={`w-6 h-6 ${colors.text}`} />
+                    </div>
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-gray-900 text-base mb-1 truncate">
-                      {getComponentDisplayTitle(component)}
-                    </h4>
-                    <p className="text-sm text-gray-700 font-medium">
-                      {getComponentDisplaySubtitle(component)}
-                    </p>
-                    {(component.settings as any).description && (
-                      <p className="text-xs text-gray-600 mt-1 line-clamp-2">
-                        {(component.settings as any).description}
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-bold text-gray-900 text-base mb-1 truncate">
+                        {getComponentDisplayTitle(component)}
+                      </h4>
+                      <p className="text-sm text-gray-700 font-medium">
+                        {getComponentDisplaySubtitle(component)}
                       </p>
-                    )}
+                      {(component.settings as any).description && (
+                        <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                          {(component.settings as any).description}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-2">
+                  {/* Actions - تحت في الموبايل، يمين في الديسكتوب */}
+                  <div className="flex items-center gap-2 justify-end sm:justify-start flex-shrink-0">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => onEditComponent(component)}
                       className="hover:bg-primary hover:text-white border-gray-300"
                     >
-                      <Settings className="w-4 h-4 ml-1" />
-                      تعديل
+                      <Settings className="w-4 h-4 sm:ml-1" />
+                      <span className="hidden sm:inline">تعديل</span>
                     </Button>
                     <Button
                       variant="outline"
@@ -234,8 +237,8 @@ export default function SectionBuilder({
                       onClick={() => onRemoveComponent(component.id)}
                       className="hover:bg-red-600 hover:text-white border-gray-300"
                     >
-                      <Trash2 className="w-4 h-4 ml-1" />
-                      حذف
+                      <Trash2 className="w-4 h-4 sm:ml-1" />
+                      <span className="hidden sm:inline">حذف</span>
                     </Button>
                   </div>
                 </div>

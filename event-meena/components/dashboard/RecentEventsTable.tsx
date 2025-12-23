@@ -98,31 +98,31 @@ export default function RecentEventsTable() {
         {recentEvents.map((event) => (
           <div
             key={event.id}
-            className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all duration-300 group"
+            className="p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all duration-300 group"
           >
-            {/* معلومات الحدث */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-2">
-                <h4 className="font-semibold text-gray-900 truncate group-hover:text-[#1a56db] transition-colors duration-300">
-                  {event.title}
-                </h4>
-                <EventStatusBadge status={event.status} />
-              </div>
-              <div className="flex items-center gap-4 text-sm text-gray-500">
-                <span>
-                  {format(new Date(event.createdAt), "d MMMM yyyy", {
-                    locale: ar,
-                  })}
-                </span>
-                <span>•</span>
-                <span>{event.stats.totalResponses} رد</span>
-                <span>•</span>
-                <span>{event.stats.views} مشاهدة</span>
-              </div>
+            {/* الصف الأول: العنوان والحالة */}
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <h4 className="font-semibold text-gray-900 truncate group-hover:text-[#1a56db] transition-colors duration-300 flex-1 min-w-0">
+                {event.title}
+              </h4>
+              <EventStatusBadge status={event.status} />
             </div>
 
-            {/* أزرار الإجراءات */}
-            <div className="flex items-center gap-2">
+            {/* الصف الثاني: التاريخ والإحصائيات */}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-500 mb-3">
+              <span>
+                {format(new Date(event.createdAt), "d MMMM yyyy", {
+                  locale: ar,
+                })}
+              </span>
+              <span className="hidden sm:inline">•</span>
+              <span>{event.stats.totalResponses} رد</span>
+              <span className="hidden sm:inline">•</span>
+              <span>{event.stats.views} مشاهدة</span>
+            </div>
+
+            {/* الصف الثالث: أزرار الإجراءات */}
+            <div className="flex items-center justify-end gap-1 sm:gap-2 pt-2 border-t border-gray-100">
               <Button
                 size="sm"
                 variant="ghost"

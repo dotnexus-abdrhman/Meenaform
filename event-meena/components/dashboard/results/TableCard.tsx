@@ -34,7 +34,7 @@ export function TableCard({
   return (
     <div className="group relative border-2 rounded-lg p-4 hover:border-primary transition-all bg-white shadow-sm hover:shadow-md">
       {/* Order Badge */}
-      <div className="absolute -top-3 -right-3 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md">
+      <div className="absolute -top-3 -right-3 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow-lg z-10 border-2 border-white">
         {index + 1}
       </div>
 
@@ -54,37 +54,22 @@ export function TableCard({
       </div>
 
       {/* Settings Summary */}
-      <div className="flex flex-wrap gap-2 mb-3">
+      <div className="flex flex-wrap gap-2 mb-4">
         {table.settings.includeSerialNumber && (
-          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">
             ترقيم تسلسلي
           </span>
         )}
         {table.settings.showHeader !== false && (
-          <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+          <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded font-medium">
             رأس الجدول
           </span>
         )}
         {table.settings.showTitle !== false && (
-          <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
+          <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded font-medium">
             عنوان الجدول
           </span>
         )}
-        <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
-          خط {table.settings.fontSize || 10}
-        </span>
-      </div>
-
-      {/* Color Preview */}
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-xs text-gray-600">لون الرأس:</span>
-        <div
-          className="w-6 h-6 rounded border-2 border-gray-300"
-          style={{ backgroundColor: table.settings.headerColor || "#1a56db" }}
-        />
-        <span className="text-xs text-gray-500 font-mono">
-          {table.settings.headerColor || "#1a56db"}
-        </span>
       </div>
 
       {/* Actions */}

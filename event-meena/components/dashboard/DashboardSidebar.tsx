@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -14,7 +15,7 @@ import {
   Home,
   Menu,
   X,
-  Sparkles,
+  ClipboardList,
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,11 @@ const navItems: NavItem[] = [
     name: "الأحداث",
     href: "/dashboard/events",
     icon: Calendar,
+  },
+  {
+    name: "مشاركاتي",
+    href: "/dashboard/participations",
+    icon: ClipboardList,
   },
   {
     name: "جهات الاتصال",
@@ -78,12 +84,16 @@ export default function DashboardSidebar() {
       {/* الشعار */}
       <div className="px-6 py-6 border-b border-gray-200">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="relative bg-[#1a56db] p-2 rounded-xl group-hover:bg-[#1648c7] transition-colors duration-200">
-            <Sparkles className="w-6 h-6 text-white" />
-          </div>
+          <Image
+            src="/logo.png"
+            alt="مينا إيفنت"
+            width={40}
+            height={40}
+            className="rounded-lg"
+          />
           <div>
             <span className="text-xl font-bold text-gray-900">
-              Event <span className="text-[#1a56db]">Meena</span>
+              مينا <span className="text-[#1a56db]">إيفنت</span>
             </span>
             <p className="text-xs text-gray-500">منصة الأحداث الذكية</p>
           </div>

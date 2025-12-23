@@ -19,9 +19,9 @@ const tajawal = Tajawal({
 });
 
 export const metadata: Metadata = {
-  title: "Event Meena - منصة إنشاء الأحداث التفاعلية",
+  title: "مينا إيفنت - منصة إنشاء الأحداث التفاعلية",
   description: "أنشئ حدثك التفاعلي في دقائق - استبيانات، اختبارات، نماذج تفاعلية والمزيد!",
-  keywords: ["استبيانات", "اختبارات", "نماذج", "أحداث تفاعلية", "Event Meena"],
+  keywords: ["استبيانات", "اختبارات", "نماذج", "أحداث تفاعلية", "مينا إيفنت"],
 };
 
 export default function RootLayout({

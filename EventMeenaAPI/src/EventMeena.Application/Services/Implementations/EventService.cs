@@ -99,7 +99,7 @@ public class EventService : IEventService
     {
         var evt = _mapper.Map<Event>(request);
         evt.UserId = userId;
-        evt.Status = EventStatus.Draft;
+        evt.Status = EventStatus.Published; // نشط فوراً عند الإنشاء
         evt.ShareCode = await GenerateUniqueShareCode();
 
         await _unitOfWork.Events.AddAsync(evt);
@@ -119,7 +119,7 @@ public class EventService : IEventService
             Title = request.Title,
             Description = request.Description,
             Type = request.Type,
-            Status = EventStatus.Draft,
+            Status = request.Status ?? EventStatus.Published, // يستخدم الحالة من الطلب، أو Published كافتراضي
             UserId = userId,
             ShareCode = await GenerateUniqueShareCode(),
             CoverImage = request.CoverImage,
@@ -141,7 +141,12 @@ public class EventService : IEventService
             ThankYouMessage = request.ThankYouMessage,
             SuccessMessage = request.SuccessMessage,
             GoodMessage = request.GoodMessage,
-            ImprovementMessage = request.ImprovementMessage
+            ImprovementMessage = request.ImprovementMessage,
+            // إعدادات الحدث الخاص
+            IsPrivate = request.IsPrivate,
+            AllowedEmailsJson = request.AllowedEmails != null && request.AllowedEmails.Count > 0
+                ? System.Text.Json.JsonSerializer.Serialize(request.AllowedEmails)
+                : null
         };
 
         await _unitOfWork.Events.AddAsync(evt);
@@ -212,6 +217,7 @@ public class EventService : IEventService
         if (request.Title != null) evt.Title = request.Title;
         if (request.Description != null) evt.Description = request.Description;
         if (request.Type.HasValue) evt.Type = request.Type.Value;
+        if (request.Status.HasValue) evt.Status = request.Status.Value;  // تحديث حالة الحدث
         if (request.CoverImage != null) evt.CoverImage = request.CoverImage;
         if (request.ThemeColor != null) evt.ThemeColor = request.ThemeColor;
         if (request.Language != null) evt.Language = request.Language;
@@ -232,6 +238,15 @@ public class EventService : IEventService
         if (request.SuccessMessage != null) evt.SuccessMessage = request.SuccessMessage;
         if (request.GoodMessage != null) evt.GoodMessage = request.GoodMessage;
         if (request.ImprovementMessage != null) evt.ImprovementMessage = request.ImprovementMessage;
+
+        // إعدادات الحدث الخاص
+        if (request.IsPrivate.HasValue) evt.IsPrivate = request.IsPrivate.Value;
+        if (request.AllowedEmails != null)
+        {
+            evt.AllowedEmailsJson = request.AllowedEmails.Count > 0
+                ? System.Text.Json.JsonSerializer.Serialize(request.AllowedEmails)
+                : null;
+        }
 
         _unitOfWork.Events.Update(evt);
         await _unitOfWork.SaveChangesAsync();

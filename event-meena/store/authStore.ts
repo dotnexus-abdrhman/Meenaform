@@ -15,7 +15,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   token: null,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true, // يبدأ بـ true لمنع التحويل للـ Login قبل التحقق من الجلسة
   error: null,
 
   // تسجيل الدخول - متصل بـ Backend API

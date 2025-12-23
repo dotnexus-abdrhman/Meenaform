@@ -26,25 +26,25 @@ export default function SectionView({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 space-y-8">
+    <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8">
       {/* Section Header */}
-      <div className="border-b border-gray-200 pb-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+      <div className="border-b border-gray-200 pb-4 sm:pb-6">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
           {section.title}
         </h2>
         {section.description && (
-          <p className="text-gray-600 text-lg leading-relaxed">
+          <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
             {section.description}
           </p>
         )}
       </div>
 
       {/* Components */}
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         {section.components.map((component, index) => (
           <div
             key={component.id}
-            className={`pb-8 border-b border-gray-100 last:border-b-0 last:pb-0 ${
+            className={`pb-6 sm:pb-8 border-b border-gray-100 last:border-b-0 last:pb-0 ${
               isPreviewMode ? "pointer-events-none opacity-75" : ""
             }`}
           >

@@ -193,9 +193,9 @@ export default function QuestionSettings({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-primary">
+      <DialogContent className="w-[95vw] max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+        <DialogHeader className="pb-4 border-b">
+          <DialogTitle className="text-xl sm:text-2xl font-bold text-primary">
             إعدادات السؤال
           </DialogTitle>
         </DialogHeader>
@@ -545,11 +545,11 @@ export default function QuestionSettings({
           </div>
         </div>
 
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose}>
+        <DialogFooter className="flex-col-reverse sm:flex-row gap-2 pt-4 border-t">
+          <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto">
             إلغاء
           </Button>
-          <Button type="button" onClick={handleSave}>
+          <Button type="button" onClick={handleSave} className="w-full sm:w-auto">
             حفظ
           </Button>
         </DialogFooter>

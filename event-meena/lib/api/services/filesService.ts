@@ -79,7 +79,7 @@ export async function uploadFile(
 
     // فتح الاتصال
     // NEXT_PUBLIC_API_URL يحتوي على /api بالفعل (مثل: http://localhost:5250/api)
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5250/api";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "/api";
     xhr.open("POST", `${baseUrl}/Files/upload?type=${type}`);
 
     // إضافة credentials إذا لزم الأمر
@@ -148,10 +148,14 @@ export function getFullFileUrl(fileUrl: string): string {
     return fileUrl;
   }
   // إزالة /api من المسار لأن الملفات الثابتة تُخدم من الجذر
-  let baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5250";
+  let baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
   // إذا كان baseUrl ينتهي بـ /api، نزيله
   if (baseUrl.endsWith("/api")) {
     baseUrl = baseUrl.slice(0, -4);
+  }
+  // لو فاضي (relative path)، نرجع المسار زي ما هو
+  if (!baseUrl) {
+    return fileUrl;
   }
   return `${baseUrl}${fileUrl}`;
 }

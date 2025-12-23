@@ -21,7 +21,6 @@ import {
   Copy,
   Trash2,
   MoreVertical,
-  Archive,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ar } from "date-fns/locale";
@@ -180,12 +179,6 @@ export default function EventsTable({
                         نسخ
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      {event.status !== "archived" && (
-                        <DropdownMenuItem onClick={() => onArchive?.(event.id)}>
-                          <Archive className="w-4 h-4 ml-2" />
-                          أرشفة
-                        </DropdownMenuItem>
-                      )}
                       <DropdownMenuItem
                         onClick={() => onDelete?.(event.id)}
                         className="text-red-600"

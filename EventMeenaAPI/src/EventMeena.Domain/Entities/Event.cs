@@ -11,7 +11,7 @@ public class Event : AuditableEntity
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }
     public EventType Type { get; set; }
-    public EventStatus Status { get; set; } = EventStatus.Draft;
+    public EventStatus Status { get; set; } = EventStatus.Published; // نشط افتراضياً
 
     // الإعدادات العامة
     public string? CoverImage { get; set; }
@@ -31,6 +31,10 @@ public class Event : AuditableEntity
     public int? MaxResponses { get; set; }
     public bool AllowMultipleResponses { get; set; } = false;
     public bool AllowEditResponses { get; set; } = false;
+
+    // إعدادات الحدث الخاص (Private Event)
+    public bool IsPrivate { get; set; } = false;
+    public string? AllowedEmailsJson { get; set; } // قائمة الإيميلات المسموح لها بالدخول (JSON Array)
 
     // إعدادات الاختبار (Quiz)
     public bool ShowResults { get; set; } = true;

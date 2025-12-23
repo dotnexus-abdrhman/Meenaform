@@ -202,24 +202,24 @@ export default function ThankYouPage({
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+    <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-8 md:p-12 text-center">
       {/* Success Icon */}
-      <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
-        <CheckCircle className="w-12 h-12 text-green-600" />
+      <div className="w-16 h-16 sm:w-24 sm:h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 animate-bounce">
+        <CheckCircle className="w-8 h-8 sm:w-12 sm:h-12 text-green-600" />
       </div>
 
       {/* Title */}
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
         {isQuiz ? "تم إنهاء الاختبار بنجاح!" : "تم الإرسال بنجاح!"}
       </h1>
 
       {/* Thank You Message */}
-      <p className="text-gray-600 text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
+      <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-6 sm:mb-8 max-w-2xl mx-auto">
         {thankYouMessage}
       </p>
 
       {/* Decorative Line */}
-      <div className="w-24 h-1 bg-gradient-to-r from-primary to-blue-600 rounded-full mx-auto mb-8"></div>
+      <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-primary to-blue-600 rounded-full mx-auto mb-6 sm:mb-8"></div>
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

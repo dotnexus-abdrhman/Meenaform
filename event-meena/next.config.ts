@@ -5,8 +5,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "localhost",
-        port: "5000",
+        hostname: "form.meena.sa",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "form.meena.sa",
         pathname: "/uploads/**",
       },
       {

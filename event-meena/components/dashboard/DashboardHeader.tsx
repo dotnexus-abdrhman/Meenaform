@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Search, Bell, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -26,17 +24,10 @@ export default function DashboardHeader({
 }: DashboardHeaderProps) {
   const { user, logout } = useAuthStore();
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
 
   const handleLogout = async () => {
     await logout();
     router.push("/");
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: تنفيذ البحث
-    console.log("البحث عن:", searchQuery);
   };
 
   return (
@@ -53,36 +44,8 @@ export default function DashboardHeader({
             )}
           </div>
 
-          {/* شريط البحث */}
-          <div className="hidden md:block flex-1 max-w-md">
-            <form onSubmit={handleSearch}>
-              <div className="relative">
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input
-                  type="search"
-                  placeholder="ابحث عن حدث، جهة اتصال..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pr-10 h-10"
-                />
-              </div>
-            </form>
-          </div>
-
-          {/* الإشعارات وصورة المستخدم */}
+          {/* قائمة المستخدم */}
           <div className="flex items-center gap-3">
-            {/* زر الإشعارات */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative hover:bg-gray-100"
-            >
-              <Bell className="w-5 h-5 text-gray-600" />
-              {/* Badge للإشعارات الجديدة */}
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </Button>
-
-            {/* قائمة المستخدم */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -139,22 +102,6 @@ export default function DashboardHeader({
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </div>
-
-        {/* شريط البحث للموبايل */}
-        <div className="md:hidden mt-4">
-          <form onSubmit={handleSearch}>
-            <div className="relative">
-              <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <Input
-                type="search"
-                placeholder="ابحث..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pr-10 h-10"
-              />
-            </div>
-          </form>
         </div>
       </div>
     </header>

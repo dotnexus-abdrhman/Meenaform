@@ -6,7 +6,7 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 // عنوان الـ Backend API
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5250/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
 
 // مفاتيح LocalStorage
 const ACCESS_TOKEN_KEY = "event_meena_access_token";

@@ -12,6 +12,7 @@ public class UpdateEventWithSectionsRequest
     public string? Title { get; set; }
     public string? Description { get; set; }
     public EventType? Type { get; set; }
+    public EventStatus? Status { get; set; }  // حالة الحدث
     public string? CoverImage { get; set; }
     public string? ThemeColor { get; set; }
     public string? Language { get; set; }
@@ -32,6 +33,10 @@ public class UpdateEventWithSectionsRequest
     public string? SuccessMessage { get; set; }
     public string? GoodMessage { get; set; }
     public string? ImprovementMessage { get; set; }
+
+    // إعدادات الحدث الخاص (Private Event)
+    public bool? IsPrivate { get; set; }
+    public List<string>? AllowedEmails { get; set; }
 
     /// <summary>
     /// الأقسام مع مكوناتها - سيتم استبدال جميع الأقسام الحالية بهذه

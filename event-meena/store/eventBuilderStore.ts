@@ -26,8 +26,11 @@ interface EventBuilderState {
   allowEdit: boolean;
   showResults: boolean;
   allowMultipleResponses: boolean;
-  requireSignature: boolean;
   thankYouMessage: string;
+
+  // Private Event Settings
+  isPrivate: boolean;
+  allowedEmails: string[];
 
   // Quiz Result Messages
   successMessage: string;
@@ -67,8 +70,13 @@ interface EventBuilderState {
   setAllowEdit: (value: boolean) => void;
   setShowResults: (value: boolean) => void;
   setAllowMultipleResponses: (value: boolean) => void;
-  setRequireSignature: (value: boolean) => void;
   setThankYouMessage: (message: string) => void;
+
+  // Private Event Actions
+  setIsPrivate: (value: boolean) => void;
+  setAllowedEmails: (emails: string[]) => void;
+  addAllowedEmail: (email: string) => void;
+  removeAllowedEmail: (email: string) => void;
   setSuccessMessage: (message: string) => void;
   setGoodMessage: (message: string) => void;
   setImprovementMessage: (message: string) => void;
@@ -111,8 +119,9 @@ const initialState = {
   allowEdit: false,
   showResults: false,
   allowMultipleResponses: false,
-  requireSignature: false,
   thankYouMessage: getDefaultThankYouMessage("survey"),
+  isPrivate: false,
+  allowedEmails: [],
   successMessage: "ممتاز! أداء رائع!",
   goodMessage: "جيد جداً! استمر في التقدم",
   improvementMessage: "يحتاج إلى تحسين",
@@ -305,11 +314,32 @@ export const useEventBuilderStore = create<EventBuilderState>((set, get) => ({
   setAllowEdit: (value) => set({ allowEdit: value }),
   setShowResults: (value) => set({ showResults: value }),
   setAllowMultipleResponses: (value) => set({ allowMultipleResponses: value }),
-  setRequireSignature: (value) => set({ requireSignature: value }),
   setThankYouMessage: (message) => set({ thankYouMessage: message }),
   setSuccessMessage: (message) => set({ successMessage: message }),
   setGoodMessage: (message) => set({ goodMessage: message }),
   setImprovementMessage: (message) => set({ improvementMessage: message }),
+
+  // Private Event Actions
+  setIsPrivate: (value) => set((state) => {
+    // إذا تم تفعيل الحدث الخاص، يجب تفعيل تسجيل الدخول تلقائياً
+    if (value && !state.requireAuth) {
+      return { isPrivate: value, requireAuth: true };
+    }
+    // إذا تم إلغاء الحدث الخاص، نمسح قائمة الإيميلات
+    if (!value) {
+      return { isPrivate: value, allowedEmails: [] };
+    }
+    return { isPrivate: value };
+  }),
+  setAllowedEmails: (emails) => set({ allowedEmails: emails }),
+  addAllowedEmail: (email) => set((state) => ({
+    allowedEmails: state.allowedEmails.includes(email)
+      ? state.allowedEmails
+      : [...state.allowedEmails, email]
+  })),
+  removeAllowedEmail: (email) => set((state) => ({
+    allowedEmails: state.allowedEmails.filter(e => e !== email)
+  })),
 
   // Build Event
   buildEvent: () => {
@@ -334,7 +364,6 @@ export const useEventBuilderStore = create<EventBuilderState>((set, get) => ({
         allowEdit: state.allowEdit,
         showResults: state.showResults,
         allowMultipleResponses: state.allowMultipleResponses,
-        requireSignature: state.requireSignature,
         shuffleQuestions: false,
         showProgressBar: true,
         allowAnonymous: !state.requireAuth,
@@ -342,6 +371,9 @@ export const useEventBuilderStore = create<EventBuilderState>((set, get) => ({
         successMessage: state.successMessage,
         goodMessage: state.goodMessage,
         improvementMessage: state.improvementMessage,
+        // Private Event
+        isPrivate: state.isPrivate,
+        allowedEmails: state.allowedEmails,
       },
       stats: {
         views: 0,
@@ -427,7 +459,8 @@ export const useEventBuilderStore = create<EventBuilderState>((set, get) => ({
       allowEdit: template.settings.allowBackNavigation,
       showResults: template.settings.showResultsImmediately,
       allowMultipleResponses: false,
-      requireSignature: false,
+      isPrivate: false,
+      allowedEmails: [],
     });
   },
 
@@ -449,7 +482,8 @@ export const useEventBuilderStore = create<EventBuilderState>((set, get) => ({
       allowEdit: userTemplate.settings.allowEdit ?? false,
       showResults: userTemplate.settings.showResults ?? false,
       allowMultipleResponses: userTemplate.settings.allowMultipleResponses ?? false,
-      requireSignature: userTemplate.settings.requireSignature ?? false,
+      isPrivate: userTemplate.settings.isPrivate ?? false,
+      allowedEmails: userTemplate.settings.allowedEmails ?? [],
       thankYouMessage: userTemplate.settings.thankYouMessage || getDefaultThankYouMessage(userTemplate.type),
       successMessage: userTemplate.settings.successMessage || "ممتاز! أداء رائع!",
       goodMessage: userTemplate.settings.goodMessage || "جيد جداً! استمر في التقدم",

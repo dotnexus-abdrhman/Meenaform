@@ -140,6 +140,9 @@ export interface BackendEventDto {
   successMessage: string | null;
   goodMessage: string | null;
   improvementMessage: string | null;
+  // إعدادات الحدث الخاص
+  isPrivate: boolean;
+  allowedEmails: string[] | null;
   viewCount: number;
   responseCount: number;
   createdAt: string;
@@ -342,6 +345,9 @@ export const mapEvent = (backend: BackendEventDto): Event => ({
     successMessage: backend.successMessage || undefined,
     goodMessage: backend.goodMessage || undefined,
     improvementMessage: backend.improvementMessage || undefined,
+    // إعدادات الحدث الخاص
+    isPrivate: backend.isPrivate || false,
+    allowedEmails: backend.allowedEmails || [],
   },
   stats: {
     totalResponses: backend.responseCount,
@@ -993,6 +999,7 @@ export const mapEventWithSectionsToBackend = (event: Event) => ({
   title: event.title,
   description: event.description || null,
   type: mapEventTypeToNumber(event.type),
+  status: mapEventStatusToNumber(event.status), // إرسال حالة الحدث للـ Backend
   coverImage: event.coverImage || null,
   themeColor: event.settings?.themeColor || null,
   language: event.settings?.language || "ar",
@@ -1013,6 +1020,9 @@ export const mapEventWithSectionsToBackend = (event: Event) => ({
   successMessage: event.settings?.successMessage || null,
   goodMessage: event.settings?.goodMessage || null,
   improvementMessage: event.settings?.improvementMessage || null,
+  // إعدادات الحدث الخاص
+  isPrivate: event.settings?.isPrivate || false,
+  allowedEmails: event.settings?.allowedEmails || null,
   sections: event.sections?.map((section, idx) => mapSectionToBackend(section, idx)) || [],
 });
 
@@ -1158,3 +1168,127 @@ export const mapResponseToBackendStart = (participantInfo?: ParticipantInfo) => 
   respondentEmail: participantInfo?.email || null,
   respondentPhone: participantInfo?.phone || null,
 });
+
+// ============================================================
+// تحويل المشاركات
+// ============================================================
+
+import { ParticipatedEvent, ParticipationDetails, ParticipationSection, ParticipationComponent } from "@/types/participation";
+
+/** المشاركة من Backend */
+export interface BackendParticipationDto {
+  responseId: string;
+  eventId: string;
+  eventTitle: string;
+  eventDescription: string | null;
+  eventType: number;
+  ownerName: string;
+  participatedAt: string;
+  completedAt: string | null;
+  durationSeconds: number | null;
+  status: number;
+  score: number | null;
+  totalPoints: number | null;
+  percentage: number | null;
+  isPassed: boolean | null;
+  answersJson: string;
+}
+
+/** تفاصيل المشاركة من Backend */
+export interface BackendParticipationDetailsDto extends BackendParticipationDto {
+  sections: BackendParticipationSectionDto[];
+}
+
+/** قسم في تفاصيل المشاركة من Backend */
+export interface BackendParticipationSectionDto {
+  id: string;
+  title: string;
+  description: string | null;
+  order: number;
+  components: BackendParticipationComponentDto[];
+}
+
+/** مكون في تفاصيل المشاركة من Backend */
+export interface BackendParticipationComponentDto {
+  id: string;
+  type: number;
+  order: number;
+  settingsJson: string;
+}
+
+/**
+ * تحويل المشاركة من Backend إلى Frontend
+ */
+export const mapParticipation = (backend: BackendParticipationDto): ParticipatedEvent => {
+  let answers: Record<string, any> = {};
+  try {
+    answers = JSON.parse(backend.answersJson || "{}");
+  } catch {
+    answers = {};
+  }
+
+  return {
+    responseId: backend.responseId,
+    eventId: backend.eventId,
+    eventTitle: backend.eventTitle,
+    eventDescription: backend.eventDescription || undefined,
+    eventType: mapEventType(backend.eventType),
+    ownerName: backend.ownerName,
+    participatedAt: backend.participatedAt,
+    completedAt: backend.completedAt || undefined,
+    durationSeconds: backend.durationSeconds || undefined,
+    status: mapResponseStatusFromBackend(backend.status),
+    score: backend.score || undefined,
+    totalPoints: backend.totalPoints || undefined,
+    percentage: backend.percentage || undefined,
+    isPassed: backend.isPassed || undefined,
+    answers,
+  };
+};
+
+/**
+ * تحويل تفاصيل المشاركة من Backend إلى Frontend
+ */
+export const mapParticipationDetails = (backend: BackendParticipationDetailsDto): ParticipationDetails => {
+  const base = mapParticipation(backend);
+
+  return {
+    ...base,
+    sections: backend.sections.map(section => ({
+      id: section.id,
+      title: section.title,
+      description: section.description || undefined,
+      order: section.order,
+      components: section.components.map(comp => {
+        let settings: any = {};
+        try {
+          settings = JSON.parse(comp.settingsJson || "{}");
+        } catch {
+          settings = {};
+        }
+
+        // تحويل نوع المكون من رقم إلى نص
+        const typeInfo = mapComponentType(comp.type);
+
+        return {
+          id: comp.id,
+          type: typeInfo.componentType,
+          order: comp.order,
+          settings,
+        };
+      }),
+    })),
+  };
+};
+
+/**
+ * تحويل حالة الرد من Backend (number) إلى Frontend (string)
+ */
+const mapResponseStatusFromBackend = (status: number): "in_progress" | "completed" | "abandoned" => {
+  switch (status) {
+    case 1: return "in_progress";
+    case 2: return "completed";
+    case 3: return "abandoned";
+    default: return "in_progress";
+  }
+};

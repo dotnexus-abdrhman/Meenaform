@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
+import Image from "next/image";
 import SignupForm from "@/components/auth/SignupForm";
 
 export default function SignupPage() {
@@ -9,11 +9,15 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         {/* الشعار */}
         <Link href="/" className="flex items-center justify-center gap-2.5 mb-8 group">
-          <div className="bg-[#1a56db] group-hover:bg-[#1648c7] p-2.5 rounded-xl transition-colors duration-200">
-            <Sparkles className="w-7 h-7 text-white" />
-          </div>
+          <Image
+            src="/logo.png"
+            alt="مينا إيفنت"
+            width={44}
+            height={44}
+            className="rounded-lg"
+          />
           <span className="text-3xl font-bold text-gray-900">
-            Event <span className="text-[#1a56db]">Meena</span>
+            مينا <span className="text-[#1a56db]">إيفنت</span>
           </span>
         </Link>
 

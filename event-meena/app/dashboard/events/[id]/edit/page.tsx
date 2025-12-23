@@ -14,7 +14,7 @@ function EditEventPageContent() {
   const eventId = params.id as string;
 
   const { currentEvent, fetchEventById, updateEvent, isLoading } = useEventsStore();
-  const { reset: resetBuilder, setTitle, setDescription, setType, setNumberOfSections, initializeSections, setStartDate, setEndDate, setRequireAuth, setAllowEdit, setShowResults, setAllowMultipleResponses, setRequireSignature } = useEventBuilderStore();
+  const { reset: resetBuilder, setTitle, setDescription, setType, setNumberOfSections, initializeSections, setStartDate, setEndDate, setRequireAuth, setAllowEdit, setShowResults, setAllowMultipleResponses, setIsPrivate, setAllowedEmails } = useEventBuilderStore();
 
   useEffect(() => {
     if (eventId) {
@@ -41,7 +41,8 @@ function EditEventPageContent() {
       setAllowEdit(currentEvent.settings?.allowEdit || false);
       setShowResults(currentEvent.settings?.showResultsToParticipants || false);
       setAllowMultipleResponses(currentEvent.settings?.allowMultipleResponses || false);
-      setRequireSignature(currentEvent.settings?.requireSignature || false);
+      setIsPrivate(currentEvent.settings?.isPrivate || false);
+      setAllowedEmails(currentEvent.settings?.allowedEmails || []);
 
       // Initialize sections with existing data
       initializeSections();
@@ -55,7 +56,7 @@ function EditEventPageContent() {
         }));
       }
     }
-  }, [currentEvent, isLoading, resetBuilder, setTitle, setDescription, setType, setNumberOfSections, setStartDate, setEndDate, setRequireAuth, setAllowEdit, setShowResults, setAllowMultipleResponses, setRequireSignature, initializeSections]);
+  }, [currentEvent, isLoading, resetBuilder, setTitle, setDescription, setType, setNumberOfSections, setStartDate, setEndDate, setRequireAuth, setAllowEdit, setShowResults, setAllowMultipleResponses, setIsPrivate, setAllowedEmails, initializeSections]);
 
   const handleComplete = async () => {
     try {
@@ -67,13 +68,15 @@ function EditEventPageContent() {
         title: builderStore.title,
         description: builderStore.description,
         type: builderStore.type,
+        status: "active" as const, // تحويل الحدث لنشط عند حفظ التعديلات
         sections: builderStore.sections.map((s) => ({ ...s, eventId })),
         settings: {
           requireAuth: builderStore.requireAuth,
           allowEdit: builderStore.allowEdit,
           showResults: builderStore.showResults,
           allowMultipleResponses: builderStore.allowMultipleResponses,
-          requireSignature: builderStore.requireSignature,
+          isPrivate: builderStore.isPrivate,
+          allowedEmails: builderStore.allowedEmails,
           shuffleQuestions: false,
           showProgressBar: true,
           allowAnonymous: !builderStore.requireAuth,

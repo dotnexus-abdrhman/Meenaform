@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sparkles, LogOut, LayoutDashboard, ChevronDown } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard, ChevronDown } from "lucide-react";
+import Image from "next/image";
 import { useAuthStore } from "@/store/authStore";
 
 export default function Header() {
@@ -38,11 +39,15 @@ export default function Header() {
           {/* الشعار */}
           <div className="flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="relative bg-[#1a56db] p-2 rounded-xl group-hover:bg-[#1648c7] transition-colors duration-200">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
+              <Image
+                src="/logo.png"
+                alt="مينا إيفنت"
+                width={40}
+                height={40}
+                className="rounded-lg"
+              />
               <span className="text-2xl font-bold text-gray-900">
-                Event <span className="text-[#1a56db]">Meena</span>
+                مينا <span className="text-[#1a56db]">إيفنت</span>
               </span>
             </Link>
           </div>

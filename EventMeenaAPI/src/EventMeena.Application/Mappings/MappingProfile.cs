@@ -26,15 +26,18 @@ public class MappingProfile : Profile
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
         // Event Mappings
-        CreateMap<Event, EventDto>();
+        CreateMap<Event, EventDto>()
+            .ForMember(dest => dest.AllowedEmails, opt => opt.MapFrom(src => ParseAllowedEmails(src.AllowedEmailsJson)));
         CreateMap<Event, EventListItemDto>()
             .ForMember(dest => dest.SectionsCount, opt => opt.MapFrom(src => src.Sections.Count))
             .ForMember(dest => dest.ComponentsCount, opt => opt.MapFrom(src =>
                 src.Sections.Sum(s => s.Components.Count)))
             .ForMember(dest => dest.CompletedResponseCount, opt => opt.MapFrom(src =>
                 src.Responses.Count(r => r.Status == Domain.Enums.ResponseStatus.Completed)));
-        CreateMap<Event, EventWithSectionsDto>();
-        CreateMap<Event, EventWithFullDetailsDto>();
+        CreateMap<Event, EventWithSectionsDto>()
+            .ForMember(dest => dest.AllowedEmails, opt => opt.MapFrom(src => ParseAllowedEmails(src.AllowedEmailsJson)));
+        CreateMap<Event, EventWithFullDetailsDto>()
+            .ForMember(dest => dest.AllowedEmails, opt => opt.MapFrom(src => ParseAllowedEmails(src.AllowedEmailsJson)));
         CreateMap<CreateEventRequest, Event>();
         CreateMap<CreateEventWithSectionsRequest, Event>();
         CreateMap<UpdateEventRequest, Event>()
@@ -129,6 +132,24 @@ public class MappingProfile : Profile
             return null;
 
         return JsonSerializer.Serialize(tags);
+    }
+
+    /// <summary>
+    /// تحويل JSON string إلى قائمة الإيميلات المسموح لها
+    /// </summary>
+    private static List<string>? ParseAllowedEmails(string? allowedEmailsJson)
+    {
+        if (string.IsNullOrEmpty(allowedEmailsJson))
+            return null;
+
+        try
+        {
+            return JsonSerializer.Deserialize<List<string>>(allowedEmailsJson);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>

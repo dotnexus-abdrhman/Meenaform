@@ -16,6 +16,9 @@ import DeleteEventDialog from "@/components/events/DeleteEventDialog";
 import SendEventDialog from "@/components/events/create/SendEventDialog";
 import SaveAsTemplateDialog from "@/components/templates/SaveAsTemplateDialog";
 import LoadingState from "@/components/dashboard/LoadingState";
+import { AlertTriangle, Send, Edit } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function EventDetailsPageContent() {
   const params = useParams();
@@ -158,6 +161,23 @@ function EventDetailsPageContent() {
 
       {/* المحتوى */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* تنبيه المسودة */}
+        {currentEvent.status === "draft" && (
+          <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex-shrink-0 w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+                <AlertTriangle className="w-5 h-5 text-amber-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-amber-800">هذا الحدث في وضع المسودة</h3>
+                <p className="text-sm text-amber-700">
+                  يجب نشر الحدث أو إكمال إنشائه ليظهر للمشاركين ويتمكنوا من التفاعل معه
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Left Column - Event Info & Sections */}

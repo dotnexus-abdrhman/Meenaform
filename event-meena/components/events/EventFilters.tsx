@@ -59,7 +59,6 @@ export default function EventFilters() {
             <SelectItem value="all">جميع الحالات</SelectItem>
             <SelectItem value="draft">مسودة</SelectItem>
             <SelectItem value="active">نشط</SelectItem>
-            <SelectItem value="archived">مؤرشف</SelectItem>
           </SelectContent>
         </Select>
 

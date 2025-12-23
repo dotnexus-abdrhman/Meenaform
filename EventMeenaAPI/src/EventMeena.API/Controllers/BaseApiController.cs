@@ -24,6 +24,11 @@ public abstract class BaseApiController : ControllerBase
     }
 
     /// <summary>
+    /// Gets the current authenticated user's email
+    /// </summary>
+    protected string? CurrentUserEmail => User.FindFirst(ClaimTypes.Email)?.Value;
+
+    /// <summary>
     /// Returns a success response with data
     /// </summary>
     protected ActionResult<ApiResponse<T>> Success<T>(T data, string? message = null)

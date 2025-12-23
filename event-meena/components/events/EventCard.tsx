@@ -18,7 +18,6 @@ import {
   Trash2,
   Layers,
   Grid3x3,
-  Archive,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ar } from "date-fns/locale";
@@ -129,12 +128,6 @@ export default function EventCard({ event, onDelete, onDuplicate, onArchive }: E
               نسخ
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            {event.status !== "archived" && (
-              <DropdownMenuItem onClick={() => onArchive?.(event.id)}>
-                <Archive className="w-4 h-4 ml-2" />
-                أرشفة
-              </DropdownMenuItem>
-            )}
             <DropdownMenuItem
               onClick={() => onDelete?.(event.id)}
               className="text-red-600"

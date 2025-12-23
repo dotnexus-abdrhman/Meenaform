@@ -115,13 +115,16 @@ export interface EventSettings {
   shuffleQuestions?: boolean; // إضافة shuffleQuestions
   shuffleOptions?: boolean; // خلط خيارات الإجابات
   randomizeQuestions?: boolean;
-  requireSignature?: boolean; // إضافة requireSignature
   timeLimit?: number; // بالدقائق
   maxResponses?: number; // الحد الأقصى للاستجابات
 
   // المظهر
   themeColor?: string; // لون السمة
   language?: string; // اللغة
+
+  // الحدث الخاص (Private Event)
+  isPrivate?: boolean; // هل الحدث خاص؟
+  allowedEmails?: string[]; // قائمة الإيميلات المسموح لها بالدخول
 }
 
 /**
@@ -262,6 +265,9 @@ export const defaultEventSettings: EventSettings = {
   allowAnonymous: true,
   shuffleQuestions: false,
   randomizeQuestions: false,
-  requireSignature: false,
+
+  // الحدث الخاص (Private Event)
+  isPrivate: false,
+  allowedEmails: [],
 };
 

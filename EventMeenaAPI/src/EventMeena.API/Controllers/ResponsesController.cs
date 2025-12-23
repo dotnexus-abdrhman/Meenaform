@@ -167,5 +167,39 @@ public class ResponsesController : BaseApiController
 
         return SuccessNoContent("تم حذف جميع الردود بنجاح");
     }
+
+    /// <summary>
+    /// الحصول على جميع الأحداث التي شاركت فيها
+    /// </summary>
+    [HttpGet("my-participations")]
+    public async Task<ActionResult<ApiResponse<List<ParticipationDto>>>> GetMyParticipations()
+    {
+        if (string.IsNullOrEmpty(CurrentUserEmail))
+            return BadRequestResponse<List<ParticipationDto>>("البريد الإلكتروني غير متوفر");
+
+        var result = await _responseService.GetMyParticipationsAsync(CurrentUserEmail);
+
+        if (!result.Success)
+            return BadRequestResponse<List<ParticipationDto>>(result.Message ?? "فشل جلب المشاركات");
+
+        return Success(result.Data!, "تم جلب المشاركات بنجاح");
+    }
+
+    /// <summary>
+    /// الحصول على تفاصيل مشاركة معينة
+    /// </summary>
+    [HttpGet("my-participations/{responseId:guid}")]
+    public async Task<ActionResult<ApiResponse<ParticipationDetailsDto>>> GetParticipationDetails(Guid responseId)
+    {
+        if (string.IsNullOrEmpty(CurrentUserEmail))
+            return BadRequestResponse<ParticipationDetailsDto>("البريد الإلكتروني غير متوفر");
+
+        var result = await _responseService.GetParticipationDetailsAsync(responseId, CurrentUserEmail);
+
+        if (!result.Success)
+            return NotFoundResponse<ParticipationDetailsDto>(result.Message ?? "المشاركة غير موجودة");
+
+        return Success(result.Data!);
+    }
 }
 
