@@ -27,10 +27,10 @@ export default function AnswerDisplay({ component, answer, questionNumber }: Ans
         return renderRatingAnswer();
       case "signature":
         return renderSignatureAnswer();
-      case "file_upload":
-        return renderFileAnswer();
-      case "image":
-        return renderImageAnswer();
+	      case "pdf_upload":
+	      case "image_upload":
+	      case "video_upload":
+	        return renderFileAnswer();
       default:
         return renderTextAnswer();
     }
@@ -39,22 +39,22 @@ export default function AnswerDisplay({ component, answer, questionNumber }: Ans
   const renderQuestionAnswer = () => {
     const questionType = settings?.questionType;
 
-    switch (questionType) {
-      case "multiple_choice":
-      case "single_choice":
-      case "dropdown":
-        return renderChoiceAnswer();
-      case "checkbox":
-        return renderCheckboxAnswer();
-      case "linear_scale":
-        return renderScaleAnswer();
-      case "date":
-        return renderDateAnswer();
-      case "time":
-        return renderTimeAnswer();
-      default:
-        return renderTextAnswer();
-    }
+	    switch (questionType) {
+	      case "multiple_choice":
+	      case "single_choice":
+	      case "dropdown":
+	        return renderChoiceAnswer();
+	      case "yes_no":
+	        return renderCheckboxAnswer();
+	      case "linear_scale":
+	        return renderScaleAnswer();
+	      case "date":
+	        return renderDateAnswer();
+	      case "time":
+	        return renderTimeAnswer();
+	      default:
+	        return renderTextAnswer();
+	    }
   };
 
   const renderChoiceAnswer = () => {
